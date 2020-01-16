@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "@fullhuman/postcss-purgecss": "fullhuman/postcss-purgecss",
+    "postcss": "^7.0.26",
+    "postcss-cli": "^7.1.0",
+    "postcss-elm-tailwind": "^0.3.0",
+    "purgecss": "^1.4.2",
+    "tailwindcss": "^1.1.4"
+  },
+  "scripts": {
+    "copy-index": "cp index.html dist/",
+    "copy-media-app": "cp mediaApp.js dist/",
+    "build-elm": "elm make src/Main.elm --output=dist/main.js",
+    "build-elm-prod": "elm make src/Main.elm --output=dist/main.js --optimize",
+    "build-tw": "postcss -o dist/main.css main.css",
+    "build-dev": "yarn build-elm && yarn copy-index && yarn copy-media-app",
+    "build": "yarn build-tw && yarn build-elm && yarn copy-index && yarn copy-media-app",
+    "build-prod": "yarn build-tw && yarn build-elm-prod && NODE_ENV=production yarn build-tw && yarn copy-index"
+  }
+}
