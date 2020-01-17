@@ -53,28 +53,28 @@ type Msg
 
 
 testTextOverlay =
-    { interval = Interval.from 5 15
+    { interval = Interval.from 2 25
     , buttonText = "Click for Location"
     , content = Text "Filmed at the Orcas Center, Madrona Room on December 19, 2019"
     }
 
 
 testLinkOverlay =
-    { interval = Interval.from 16 25
+    { interval = Interval.from 26 35
     , buttonText = "Click for Link"
     , content = Link { href = "http://www.orcas.dance", text = "www.orcas.dance" }
     }
 
 
 testPhotoOverlay =
-    { interval = Interval.from 26 35
+    { interval = Interval.from 36 45
     , buttonText = "Click for Photo"
     , content = Photo { src = "assets/po1.jpg", alt = "Dancer!" }
     }
 
 
 testVideoOverlay =
-    { interval = Interval.from 36 45
+    { interval = Interval.from 46 80
     , buttonText = "Click for Video"
     , content = Video "assets/vo1.mp4"
     }
