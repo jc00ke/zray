@@ -35,6 +35,7 @@ type alias Model =
     , mediaSource : MediaSource
     , overlays : List Overlay
     , data : Dict Int (Maybe Int)
+    , currentOverlay : Maybe Overlay
     }
 
 
@@ -50,17 +51,19 @@ type Msg
     | MediaStateUpdate Media.State
     | Play
     | Pause
+    | Show Overlay
+    | Close
 
 
 testTextOverlay =
-    { interval = Interval.from 2 25
+    { interval = Interval.from 2 6
     , buttonText = "Click for Location"
     , content = Text "Filmed at the Orcas Center, Madrona Room on December 19, 2019"
     }
 
 
 testLinkOverlay =
-    { interval = Interval.from 26 35
+    { interval = Interval.from 9 35
     , buttonText = "Click for Link"
     , content = Link { href = "http://www.orcas.dance", text = "www.orcas.dance" }
     }
@@ -134,6 +137,7 @@ init _ =
             , mediaSource = VideoSource
             , overlays = overlays
             , data = data
+            , currentOverlay = Nothing
             }
     in
     ( model, Cmd.none )
@@ -173,6 +177,7 @@ view model =
     in
     div [ TW.container, TW.mx_auto ]
         [ node "div" [] [ videoElement ]
+        , overlayControl model
         , overlay model
         , div [] [ playPauseButton ]
         , div [] mediaInfo
@@ -181,6 +186,32 @@ view model =
 
 overlay : Model -> Html Msg
 overlay model =
+    case model.currentOverlay of
+        Nothing ->
+            div [] []
+
+        Just o ->
+            div [ TW.text_center ]
+                [ div [ TW.inline_block, TW.relative ]
+                    [ div
+                        [ TW.absolute
+                        , TW.left_0
+                        , TW.top_0
+                        , TW.min_w_full
+                        , TW.bg_gray_800
+                        , TW.min_h_full
+                        , TW.opacity_50
+                        , onClick Close
+                        ]
+                        [ text "OVERLAY!!!" ]
+
+                    --<video id="dance" controls="" crossorigin="anonymous" class=""><source src="./assets/master.mp4"></video>
+                    ]
+                ]
+
+
+overlayControl : Model -> Html Msg
+overlayControl model =
     let
         s =
             currentSecond model.state
@@ -206,12 +237,6 @@ overlay model =
             div [] []
 
         Just o ->
-            --<div class="text-center">
-            --<div class="inline-block relative">
-            --<div class="absolute left-0 top-0 min-w-full bg-gray-800 min-h-full opacity-50">OVERLAY</div>
-            --<video id="dance" controls="" crossorigin="anonymous" class=""><source src="./assets/master.mp4"></video>
-            --</div>
-            --</div>
             div
                 [ TW.absolute
                 , TW.bg_gray_800
@@ -221,8 +246,20 @@ overlay model =
                 , TW.text_center
                 , TW.text_white
                 , TW.top_0
+                , onClick <| Show o
+                , toggleOverlayButtonVisibility model
                 ]
                 [ text o.buttonText ]
+
+
+toggleOverlayButtonVisibility : Model -> Html.Attribute Msg
+toggleOverlayButtonVisibility model =
+    case model.currentOverlay of
+        Nothing ->
+            TW.visible
+
+        Just _ ->
+            TW.invisible
 
 
 currentSecond : Media.State -> Int
@@ -245,10 +282,16 @@ update msg model =
             ( { model | state = state }, Cmd.none )
 
         Play ->
-            ( model, play model.state outbound )
+            ( { model | currentOverlay = Nothing }, play model.state outbound )
 
         Pause ->
             ( model, pause model.state outbound )
+
+        Show o ->
+            ( { model | currentOverlay = Just o }, pause model.state outbound )
+
+        Close ->
+            ( { model | currentOverlay = Nothing }, play model.state outbound )
 
 
 subscriptions : Model -> Sub Msg
