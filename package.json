@@ -10,7 +10,7 @@
   "scripts": {
     "copy-index": "cp index.html dist/",
     "copy-media-app": "cp mediaApp.js dist/",
-    "build-elm": "elm make src/Main.elm --output=dist/main.js",
+    "build-elm": "elm make src/Main.elm --output=dist/main.js --debug",
     "build-elm-prod": "elm make src/Main.elm --output=dist/main.js --optimize",
     "build-tw": "postcss -o dist/main.css main.css",
     "build-dev": "yarn build-elm && yarn copy-index && yarn copy-media-app",
