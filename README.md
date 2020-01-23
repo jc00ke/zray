@@ -17,6 +17,24 @@ Video overlay, similar to Amazon's X-Ray feature.
 [^1]: "Filmed at the Orcas Center, Madrona Room on December 19, 2019"
 [^2]: "Aristotle Luna, age 16, dancer with the Island Inspiration All-Stars"
 
-https://jsfiddle.net/jc00ke/h6n02xwL/
-https://github.com/FrankelJb/elm-media
-https://www.tailwindtoolbox.com/components/modal
+## Dev
+
+```
+> yarn
+> ./bin/server
+```
+
+## Building
+
+```
+> yarn parcel build index.html
+> ls dist/
+```
+
+## Notes and References
+
+* https://jsfiddle.net/jc00ke/h6n02xwL/
+* https://github.com/FrankelJb/elm-media
+* https://www.tailwindtoolbox.com/components/modal
+* https://tailwind.run/ke4wNC/4
+* https://github.com/JoelQ/fourier-art/commit/1acfc497717f7e530f7d745b5c7eb630512cbd6c
