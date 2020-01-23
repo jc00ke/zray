@@ -8,22 +8,7 @@
 
   <body>
     <div id="video"></div>
-    <script src="main.js"></script>
-    <script src="mediaApp.js"></script>
-    <script>
-      MediaApp.Modify.timeRanges();
-      /* Adds the "asArray getter to the TimeRanges object prototype, allowing us to decode the media element state without using Native/Kernel Code */
-      MediaApp.Modify.tracks();
-      /* Adds the "mode" setter and getter to the HTMLTrack object prototype, letting us show/hide/disable text tracks from the view function. */
-      MediaApp.Elements.defineMediaCapture();
-      let elmApp = Elm.Main.init({
-        node: document.getElementById("video")
-      });
-      /* Creates a fullscreen Elm App from our example (Main.elm) */
-
-      elmApp.ports.outbound.subscribe(MediaApp.portHandler);
-      /* Subscribe to our port and pass it the default portHandler(msg) function from "/Port/mediaApp.js" */
-    </script>
+    <script src="./index.js"></script>
   </body>
 
 </html>

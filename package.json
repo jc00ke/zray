@@ -5,16 +5,12 @@
     "postcss-cli": "^7.1.0",
     "postcss-elm-tailwind": "^0.3.0",
     "purgecss": "^1.4.2",
+    "src": "^1.1.2",
     "tailwindcss": "^1.1.4"
   },
-  "scripts": {
-    "copy-index": "cp index.html dist/",
-    "copy-media-app": "cp mediaApp.js dist/",
-    "build-elm": "elm make src/Main.elm --output=dist/main.js --debug",
-    "build-elm-prod": "elm make src/Main.elm --output=dist/main.js --optimize",
-    "build-tw": "postcss -o dist/main.css main.css",
-    "build-dev": "yarn build-elm && yarn copy-index && yarn copy-media-app",
-    "build": "yarn build-tw && yarn build-elm && yarn copy-index && yarn copy-media-app",
-    "build-prod": "yarn build-tw && yarn build-elm-prod && NODE_ENV=production yarn build-tw && yarn copy-index"
+  "devDependencies": {
+    "elm-hot": "^1.1.4",
+    "node-elm-compiler": "^5.0.4",
+    "parcel-bundler": "^1.12.4"
   }
 }
