@@ -113,9 +113,6 @@ init _ =
             --durationInSeconds state
             82
 
-        _ =
-            Debug.log "DURATION" duration_
-
         range =
             List.range 0 duration_
 
@@ -128,9 +125,6 @@ init _ =
                 range
                 (List.map (\s -> getOverlayIndexBySecond s overlays) range)
                 |> Dict.fromList
-
-        _ =
-            Debug.log "DATA" data
 
         model =
             { state = state
