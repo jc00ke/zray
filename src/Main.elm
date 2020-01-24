@@ -1,11 +1,13 @@
 port module Main exposing (Model, outbound, view)
 
+--import Html.Keyed exposing (node)
+
 import Browser
 import Dict exposing (Dict)
-import Html exposing (Html, button, div, p, text, track, video)
-import Html.Attributes exposing (id, kind, src, srclang)
+import Html exposing (..)
+import Html.Attributes exposing (alt, href, id, kind, src, srclang, target)
 import Html.Events exposing (onClick)
-import Html.Keyed exposing (node)
+import Html.Keyed as K
 import Interval exposing (Interval)
 import List.Extra
 import Media exposing (PortMsg, load, mute, newVideo, pause, play, seek)
@@ -23,10 +25,18 @@ type MediaSource
     = VideoSource
 
 
+type alias LinkItem =
+    { href : String, text : String }
+
+
+type alias PhotoItem =
+    { src : String, alt : String }
+
+
 type OverlayContent
     = Text String
-    | Link { href : String, text : String }
-    | Photo { src : String, alt : String }
+    | Link LinkItem
+    | Photo PhotoItem
     | Video String
 
 
@@ -56,28 +66,28 @@ type Msg
 
 
 testTextOverlay =
-    { interval = Interval.from 2 6
+    { interval = Interval.from 22 30
     , buttonText = "Click for Location"
     , content = Text "Filmed at the Orcas Center, Madrona Room on December 19, 2019"
     }
 
 
 testLinkOverlay =
-    { interval = Interval.from 9 35
+    { interval = Interval.from 5 10
     , buttonText = "Click for Link"
     , content = Link { href = "http://www.orcas.dance", text = "www.orcas.dance" }
     }
 
 
 testPhotoOverlay =
-    { interval = Interval.from 36 45
+    { interval = Interval.from 15 20
     , buttonText = "Click for Photo"
     , content = Photo { src = "assets/po1.jpg", alt = "Dancer!" }
     }
 
 
 testVideoOverlay =
-    { interval = Interval.from 46 80
+    { interval = Interval.from 1 4
     , buttonText = "Click for Video"
     , content = Video "assets/vo1.mp4"
     }
@@ -147,7 +157,7 @@ view model =
                 (Media.Events.allEvents MediaStateUpdate
                     ++ [ playsInline True, controls True, crossOrigin anonymous ]
                 )
-                [ ( "source", source "/assets/master.mp4" [] )
+                [ ( "source", Media.Source.source "/assets/master.mp4" [] )
                 ]
             )
 
@@ -159,9 +169,9 @@ view model =
             ]
     in
     div [ TW.container, TW.mx_auto ]
-        [ node
+        [ K.node
             "div"
-            [ TW.absolute
+            [ TW.relative
             , TW.top_0
             , TW.left_0
             , TW.flex
@@ -183,23 +193,120 @@ overlay model =
             ( "div", div [] [] )
 
         Just o ->
-            ( "div"
-            , div [ TW.flex, TW.flex_col, TW.flex_grow ]
-                [ div
-                    [ TW.absolute
-                    , TW.w_full
-                    , TW.h_full
-                    , TW.left_0
-                    , TW.top_0
-                    , TW.opacity_50
-                    , TW.bg_gray_800
-                    , TW.opacity_50
-                    , TW.text_center
-                    , onClick Close
-                    ]
-                    [ text "OVERLAY!!!" ]
+            case o.content of
+                Text t ->
+                    ( "div", textOverlay t )
+
+                Link item ->
+                    ( "div", linkOverlay item )
+
+                Photo item ->
+                    ( "div", photoOverlay item )
+
+                Video src ->
+                    ( "div", videoOverlay src )
+
+
+videoOverlay : String -> Html Msg
+videoOverlay src =
+    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+        [ div
+            [ TW.absolute
+            , TW.w_full
+            , TW.h_full
+            , TW.left_0
+            , TW.top_0
+            , TW.bg_gray_800
+            , TW.opacity_100
+
+            --, onClick Close
+            ]
+            [ K.node "div"
+                []
+                [ ( "video"
+                  , Media.video
+                        (newVideo "overlay video")
+                        [ playsInline True, controls True, crossOrigin anonymous ]
+                        [ ( "source", Media.Source.source src [] )
+                        ]
+                  )
                 ]
-            )
+            ]
+        ]
+
+
+photoOverlay : PhotoItem -> Html Msg
+photoOverlay item =
+    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+        [ div
+            [ TW.absolute
+            , TW.w_full
+            , TW.h_full
+            , TW.left_0
+            , TW.top_0
+            , TW.bg_gray_800
+            , TW.opacity_100
+            , onClick Close
+            ]
+            [ img [ src item.src, alt item.alt, TW.object_cover, TW.w_full, TW.h_full ] [] ]
+        ]
+
+
+linkOverlay : LinkItem -> Html Msg
+linkOverlay item =
+    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+        [ div
+            [ TW.absolute
+            , TW.w_full
+            , TW.h_full
+            , TW.left_0
+            , TW.top_0
+            , TW.opacity_50
+            , TW.bg_gray_800
+            , TW.opacity_50
+            , TW.text_center
+            , onClick Close
+            ]
+            [ a [ href item.href, target "_blank" ] [ text item.text ] ]
+        ]
+
+
+textOverlay : String -> Html Msg
+textOverlay txt =
+    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+        [ div
+            [ TW.absolute
+            , TW.w_full
+            , TW.h_full
+            , TW.left_0
+            , TW.top_0
+            , TW.opacity_50
+            , TW.bg_gray_800
+            , TW.opacity_50
+            , TW.text_center
+            , onClick Close
+            ]
+            [ text txt ]
+        ]
+
+
+testOverlay : Html Msg
+testOverlay =
+    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+        [ div
+            [ TW.absolute
+            , TW.w_full
+            , TW.h_full
+            , TW.left_0
+            , TW.top_0
+            , TW.opacity_50
+            , TW.bg_gray_800
+            , TW.opacity_50
+            , TW.text_center
+            , onClick Close
+            ]
+            [ text "OVERLAY!!!" ]
+        ]
 
 
 overlayControl : Model -> ( String, Html Msg )
