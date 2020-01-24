@@ -2,13 +2,13 @@ port module Main exposing (Model, outbound, view)
 
 import Browser
 import Dict exposing (Dict)
-import Html exposing (Html, button, div, p, text, track)
+import Html exposing (Html, button, div, p, text, track, video)
 import Html.Attributes exposing (id, kind, src, srclang)
 import Html.Events exposing (onClick)
 import Html.Keyed exposing (node)
 import Interval exposing (Interval)
 import List.Extra
-import Media exposing (PortMsg, load, mute, newVideo, pause, play, seek, video)
+import Media exposing (PortMsg, load, mute, newVideo, pause, play, seek)
 import Media.Attributes exposing (anonymous, autoplay, controls, crossOrigin, label, mode, playsInline)
 import Media.Events
 import Media.Source exposing (mediaCapture, source)
@@ -140,25 +140,14 @@ init _ =
 view : Model -> Html Msg
 view model =
     let
-        playPauseButton =
-            case playbackStatus model.state of
-                Playing ->
-                    button [ onClick Pause ] [ text "Pause" ]
-
-                Paused ->
-                    button [ onClick Play ] [ text "Play" ]
-
-                _ ->
-                    button [ onClick Play ] [ text "Other" ]
-
         videoElement =
             ( "video"
-            , video
+            , Media.video
                 model.state
                 (Media.Events.allEvents MediaStateUpdate
                     ++ [ playsInline True, controls True, crossOrigin anonymous ]
                 )
-                [ ( "source", source "./assets/master.mp4" [] )
+                [ ( "source", source "/assets/master.mp4" [] )
                 ]
             )
 
@@ -170,41 +159,50 @@ view model =
             ]
     in
     div [ TW.container, TW.mx_auto ]
-        [ node "div" [] [ videoElement ]
-        , overlayControl model
-        , overlay model
-        , div [] [ playPauseButton ]
+        [ node
+            "div"
+            [ TW.absolute
+            , TW.top_0
+            , TW.left_0
+            , TW.flex
+            , TW.border_red_600
+            , TW.border_2
+            ]
+            [ videoElement
+            , overlayControl model
+            , overlay model
+            ]
         , div [] mediaInfo
         ]
 
 
-overlay : Model -> Html Msg
+overlay : Model -> ( String, Html Msg )
 overlay model =
     case model.currentOverlay of
         Nothing ->
-            div [] []
+            ( "div", div [] [] )
 
         Just o ->
-            div [ TW.text_center ]
-                [ div [ TW.inline_block, TW.relative ]
-                    [ div
-                        [ TW.absolute
-                        , TW.left_0
-                        , TW.top_0
-                        , TW.min_w_full
-                        , TW.bg_gray_800
-                        , TW.min_h_full
-                        , TW.opacity_50
-                        , onClick Close
-                        ]
-                        [ text "OVERLAY!!!" ]
-
-                    --<video id="dance" controls="" crossorigin="anonymous" class=""><source src="./assets/master.mp4"></video>
+            ( "div"
+            , div [ TW.flex, TW.flex_col, TW.flex_grow ]
+                [ div
+                    [ TW.absolute
+                    , TW.w_full
+                    , TW.h_full
+                    , TW.left_0
+                    , TW.top_0
+                    , TW.opacity_50
+                    , TW.bg_gray_800
+                    , TW.opacity_50
+                    , TW.text_center
+                    , onClick Close
                     ]
+                    [ text "OVERLAY!!!" ]
                 ]
+            )
 
 
-overlayControl : Model -> Html Msg
+overlayControl : Model -> ( String, Html Msg )
 overlayControl model =
     let
         s =
@@ -228,10 +226,11 @@ overlayControl model =
     in
     case overlay_ of
         Nothing ->
-            div [] []
+            ( "div", div [] [] )
 
         Just o ->
-            div
+            ( "div"
+            , div
                 [ TW.absolute
                 , TW.bg_gray_800
                 , TW.opacity_75
@@ -244,6 +243,7 @@ overlayControl model =
                 , toggleOverlayButtonVisibility model
                 ]
                 [ text o.buttonText ]
+            )
 
 
 toggleOverlayButtonVisibility : Model -> Html.Attribute Msg
