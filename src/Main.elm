@@ -2,17 +2,17 @@ port module Main exposing (Model, outbound, view)
 
 import Browser
 import Dict exposing (Dict)
-import Html exposing (..)
-import Html.Attributes exposing (alt, class, classList, href, id, kind, src, srclang, target)
+import Html exposing (Html, a, div, img, p, text)
+import Html.Attributes exposing (alt, class, classList, href, src, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
 import Interval exposing (Interval)
 import List.Extra
-import Media exposing (PortMsg, load, mute, newVideo, pause, play, seek)
-import Media.Attributes exposing (anonymous, autoplay, controls, crossOrigin, label, mode, playsInline)
+import Media exposing (PortMsg, newVideo, pause, play)
+import Media.Attributes exposing (anonymous, controls, crossOrigin, playsInline)
 import Media.Events
-import Media.Source exposing (mediaCapture, source)
-import Media.State exposing (PlaybackStatus(..), currentTime, duration, playbackStatus, played)
+import Media.Source exposing (source)
+import Media.State exposing (PlaybackStatus(..), currentTime, duration)
 
 
 port outbound : PortMsg -> Cmd msg

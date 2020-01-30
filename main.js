@@ -6322,7 +6322,7 @@ var $author$project$Main$linkOverlay = function (item) {
 								_Utils_Tuple2('h-full', true),
 								_Utils_Tuple2('left-0', true),
 								_Utils_Tuple2('top-0', true),
-								_Utils_Tuple2('bg-gray_800', true),
+								_Utils_Tuple2('bg-gray-800', true),
 								_Utils_Tuple2('opacity-75', true),
 								_Utils_Tuple2('text-center', true)
 							])),
@@ -6427,7 +6427,7 @@ var $author$project$Main$textOverlay = function (txt) {
 								_Utils_Tuple2('h-full', true),
 								_Utils_Tuple2('left-0', true),
 								_Utils_Tuple2('top-0', true),
-								_Utils_Tuple2('bg-gray_800', true),
+								_Utils_Tuple2('bg-gray-800', true),
 								_Utils_Tuple2('opacity-50', true),
 								_Utils_Tuple2('text-center', true)
 							])),
@@ -6629,8 +6629,8 @@ var $author$project$Main$videoOverlay = function (src) {
 				_List_fromArray(
 					[
 						_Utils_Tuple2('flex', true),
-						_Utils_Tuple2('flex_col', true),
-						_Utils_Tuple2('flex_grow', true)
+						_Utils_Tuple2('flex-col', true),
+						_Utils_Tuple2('flex-grow', true)
 					]))
 			]),
 		_List_fromArray(
@@ -6643,12 +6643,12 @@ var $author$project$Main$videoOverlay = function (src) {
 						_List_fromArray(
 							[
 								_Utils_Tuple2('absolute', true),
-								_Utils_Tuple2('w_full', true),
-								_Utils_Tuple2('h_full', true),
-								_Utils_Tuple2('left_0', true),
-								_Utils_Tuple2('top_0', true),
-								_Utils_Tuple2('bg_gray_800', true),
-								_Utils_Tuple2('opacity_100', true)
+								_Utils_Tuple2('w-full', true),
+								_Utils_Tuple2('h-full', true),
+								_Utils_Tuple2('left-0', true),
+								_Utils_Tuple2('top-0', true),
+								_Utils_Tuple2('bg-gray-800', true),
+								_Utils_Tuple2('opacity-100', true)
 							]))
 					]),
 				_List_fromArray(
@@ -6825,13 +6825,13 @@ var $author$project$Main$overlayControl = function (model) {
 						_List_fromArray(
 							[
 								_Utils_Tuple2('absolute', true),
-								_Utils_Tuple2('bg_gray_800', true),
-								_Utils_Tuple2('opacity_75', true),
-								_Utils_Tuple2('px_4', true),
-								_Utils_Tuple2('py_2', true),
-								_Utils_Tuple2('text_center', true),
-								_Utils_Tuple2('text_white', true),
-								_Utils_Tuple2('top_0', true),
+								_Utils_Tuple2('bg-gray-800', true),
+								_Utils_Tuple2('opacity-75', true),
+								_Utils_Tuple2('px-4', true),
+								_Utils_Tuple2('py-2', true),
+								_Utils_Tuple2('text-center', true),
+								_Utils_Tuple2('text-white', true),
+								_Utils_Tuple2('top-0', true),
 								_Utils_Tuple2(
 								$author$project$Main$toggleOverlayButtonVisibility(model),
 								true)
@@ -6910,7 +6910,7 @@ var $author$project$Main$view = function (model) {
 		_List_fromArray(
 			[
 				$elm$html$Html$Attributes$class('container'),
-				$elm$html$Html$Attributes$class('mx_auto')
+				$elm$html$Html$Attributes$class('mx-auto')
 			]),
 		_List_fromArray(
 			[
@@ -6923,11 +6923,11 @@ var $author$project$Main$view = function (model) {
 						_List_fromArray(
 							[
 								_Utils_Tuple2('relative', true),
-								_Utils_Tuple2('top_0', true),
-								_Utils_Tuple2('left_0', true),
+								_Utils_Tuple2('top-0', true),
+								_Utils_Tuple2('left-0', true),
 								_Utils_Tuple2('flex', true),
-								_Utils_Tuple2('border_red_600', true),
-								_Utils_Tuple2('border_2', true)
+								_Utils_Tuple2('border-red-600', true),
+								_Utils_Tuple2('border-2', true)
 							]))
 					]),
 				_List_fromArray(
