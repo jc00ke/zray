@@ -1,6 +1,6 @@
 module Internal.Helpers exposing (..)
 
-import Media.State exposing (TextTrackMode(..), TextTrackKind(..))
+import Media.State exposing (TextTrackKind(..), TextTrackMode(..))
 
 
 {-| Simple conversion from a TextTrackMode to string

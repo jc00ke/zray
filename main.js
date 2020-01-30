@@ -5145,6 +5145,173 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$VideoSource = {$: 'VideoSource'};
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
+var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
+var $elm$core$Dict$Black = {$: 'Black'};
+var $elm$core$Dict$RBNode_elm_builtin = F5(
+	function (a, b, c, d, e) {
+		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
+	});
+var $elm$core$Dict$Red = {$: 'Red'};
+var $elm$core$Dict$balance = F5(
+	function (color, key, value, left, right) {
+		if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Red')) {
+			var _v1 = right.a;
+			var rK = right.b;
+			var rV = right.c;
+			var rLeft = right.d;
+			var rRight = right.e;
+			if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
+				var _v3 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var lLeft = left.d;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					$elm$core$Dict$Red,
+					key,
+					value,
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					color,
+					rK,
+					rV,
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, left, rLeft),
+					rRight);
+			}
+		} else {
+			if ((((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) && (left.d.$ === 'RBNode_elm_builtin')) && (left.d.a.$ === 'Red')) {
+				var _v5 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var _v6 = left.d;
+				var _v7 = _v6.a;
+				var llK = _v6.b;
+				var llV = _v6.c;
+				var llLeft = _v6.d;
+				var llRight = _v6.e;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					$elm$core$Dict$Red,
+					lK,
+					lV,
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, key, value, lRight, right));
+			} else {
+				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
+			}
+		}
+	});
+var $elm$core$Basics$compare = _Utils_compare;
+var $elm$core$Dict$insertHelp = F3(
+	function (key, value, dict) {
+		if (dict.$ === 'RBEmpty_elm_builtin') {
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Red, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		} else {
+			var nColor = dict.a;
+			var nKey = dict.b;
+			var nValue = dict.c;
+			var nLeft = dict.d;
+			var nRight = dict.e;
+			var _v1 = A2($elm$core$Basics$compare, key, nKey);
+			switch (_v1.$) {
+				case 'LT':
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						A3($elm$core$Dict$insertHelp, key, value, nLeft),
+						nRight);
+				case 'EQ':
+					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
+				default:
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						nLeft,
+						A3($elm$core$Dict$insertHelp, key, value, nRight));
+			}
+		}
+	});
+var $elm$core$Dict$insert = F3(
+	function (key, value, dict) {
+		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
+		if ((_v0.$ === 'RBNode_elm_builtin') && (_v0.a.$ === 'Red')) {
+			var _v1 = _v0.a;
+			var k = _v0.b;
+			var v = _v0.c;
+			var l = _v0.d;
+			var r = _v0.e;
+			return A5($elm$core$Dict$RBNode_elm_builtin, $elm$core$Dict$Black, k, v, l, r);
+		} else {
+			var x = _v0;
+			return x;
+		}
+	});
+var $elm$core$Dict$fromList = function (assocs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, dict) {
+				var key = _v0.a;
+				var value = _v0.b;
+				return A3($elm$core$Dict$insert, key, value, dict);
+			}),
+		$elm$core$Dict$empty,
+		assocs);
+};
+var $ianmackenzie$elm_interval$Interval$endpoints = function (_v0) {
+	var intervalEndpoints = _v0.a;
+	return intervalEndpoints;
+};
+var $ianmackenzie$elm_interval$Interval$contains = F2(
+	function (value, interval) {
+		var _v0 = $ianmackenzie$elm_interval$Interval$endpoints(interval);
+		var intervalMinValue = _v0.a;
+		var intervalMaxValue = _v0.b;
+		return (_Utils_cmp(intervalMinValue, value) < 1) && (_Utils_cmp(value, intervalMaxValue) < 1);
+	});
+var $elm_community$list_extra$List$Extra$findIndexHelp = F3(
+	function (index, predicate, list) {
+		findIndexHelp:
+		while (true) {
+			if (!list.b) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (predicate(x)) {
+					return $elm$core$Maybe$Just(index);
+				} else {
+					var $temp$index = index + 1,
+						$temp$predicate = predicate,
+						$temp$list = xs;
+					index = $temp$index;
+					predicate = $temp$predicate;
+					list = $temp$list;
+					continue findIndexHelp;
+				}
+			}
+		}
+	});
+var $elm_community$list_extra$List$Extra$findIndex = $elm_community$list_extra$List$Extra$findIndexHelp(0);
+var $author$project$Main$getOverlayIndexBySecond = F2(
+	function (s, overlays) {
+		return A2(
+			$elm_community$list_extra$List$Extra$findIndex,
+			function (o) {
+				return A2($ianmackenzie$elm_interval$Interval$contains, s, o.interval);
+			},
+			overlays);
+	});
 var $author$project$Internal$Types$HaveNothing = {$: 'HaveNothing'};
 var $author$project$Internal$Types$Id = function (a) {
 	return {$: 'Id', a: a};
@@ -5179,11 +5346,72 @@ var $author$project$Media$newVideo = function (uniqueId) {
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Main$Link = function (a) {
+	return {$: 'Link', a: a};
+};
+var $ianmackenzie$elm_interval$Interval$Interval = function (a) {
+	return {$: 'Interval', a: a};
+};
+var $ianmackenzie$elm_interval$Interval$from = F2(
+	function (firstValue, secondValue) {
+		return (_Utils_cmp(firstValue, secondValue) < 1) ? $ianmackenzie$elm_interval$Interval$Interval(
+			_Utils_Tuple2(firstValue, secondValue)) : $ianmackenzie$elm_interval$Interval$Interval(
+			_Utils_Tuple2(secondValue, firstValue));
+	});
+var $author$project$Main$testLinkOverlay = {
+	buttonText: 'Click for Link',
+	content: $author$project$Main$Link(
+		{href: 'http://www.orcas.dance', text: 'www.orcas.dance'}),
+	interval: A2($ianmackenzie$elm_interval$Interval$from, 5, 10)
+};
+var $author$project$Main$Photo = function (a) {
+	return {$: 'Photo', a: a};
+};
+var $author$project$Main$testPhotoOverlay = {
+	buttonText: 'Click for Photo',
+	content: $author$project$Main$Photo(
+		{alt: 'Dancer!', src: 'assets/po1.jpg'}),
+	interval: A2($ianmackenzie$elm_interval$Interval$from, 15, 20)
+};
+var $author$project$Main$Text = function (a) {
+	return {$: 'Text', a: a};
+};
+var $author$project$Main$testTextOverlay = {
+	buttonText: 'Click for Location',
+	content: $author$project$Main$Text('Filmed at the Orcas Center, Madrona Room on December 19, 2019'),
+	interval: A2($ianmackenzie$elm_interval$Interval$from, 22, 30)
+};
+var $author$project$Main$Video = function (a) {
+	return {$: 'Video', a: a};
+};
+var $author$project$Main$testVideoOverlay = {
+	buttonText: 'Click for Video',
+	content: $author$project$Main$Video('assets/vo1.mp4'),
+	interval: A2($ianmackenzie$elm_interval$Interval$from, 1, 4)
+};
+var $author$project$Main$testOverlays = _List_fromArray(
+	[$author$project$Main$testTextOverlay, $author$project$Main$testLinkOverlay, $author$project$Main$testPhotoOverlay, $author$project$Main$testVideoOverlay]);
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+var $elm_community$list_extra$List$Extra$zip = $elm$core$List$map2($elm$core$Tuple$pair);
 var $author$project$Main$init = function (_v0) {
-	var model = {
-		mediaSource: $author$project$Main$VideoSource,
-		state: $author$project$Media$newVideo('dance')
-	};
+	var state = $author$project$Media$newVideo('dance');
+	var overlays = $author$project$Main$testOverlays;
+	var duration_ = 82;
+	var range = A2($elm$core$List$range, 0, duration_);
+	var data = $elm$core$Dict$fromList(
+		A2(
+			$elm_community$list_extra$List$Extra$zip,
+			range,
+			A2(
+				$elm$core$List$map,
+				function (s) {
+					return A2($author$project$Main$getOverlayIndexBySecond, s, overlays);
+				},
+				range)));
+	var model = {currentOverlay: $elm$core$Maybe$Nothing, data: data, mediaSource: $author$project$Main$VideoSource, overlays: overlays, state: state};
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -5260,19 +5488,34 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 			case 'Play':
 				return _Utils_Tuple2(
-					model,
+					_Utils_update(
+						model,
+						{currentOverlay: $elm$core$Maybe$Nothing}),
 					A2($author$project$Media$play, model.state, $author$project$Main$outbound));
-			default:
+			case 'Pause':
 				return _Utils_Tuple2(
 					model,
 					A2($author$project$Media$pause, model.state, $author$project$Main$outbound));
+			case 'Show':
+				var o = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							currentOverlay: $elm$core$Maybe$Just(o)
+						}),
+					A2($author$project$Media$pause, model.state, $author$project$Main$outbound));
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{currentOverlay: $elm$core$Maybe$Nothing}),
+					A2($author$project$Media$play, model.state, $author$project$Main$outbound));
 		}
 	});
 var $author$project$Main$MediaStateUpdate = function (a) {
 	return {$: 'MediaStateUpdate', a: a};
 };
-var $author$project$Main$Pause = {$: 'Pause'};
-var $author$project$Main$Play = {$: 'Play'};
 var $elm$virtual_dom$VirtualDom$Custom = function (a) {
 	return {$: 'Custom', a: a};
 };
@@ -5945,7 +6188,6 @@ var $author$project$Media$Events$allEvents = function (tagger) {
 };
 var $author$project$Media$Attributes$Anonymous = {$: 'Anonymous'};
 var $author$project$Media$Attributes$anonymous = $author$project$Media$Attributes$Anonymous;
-var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -5954,7 +6196,31 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $author$project$TW$container = $elm$html$Html$Attributes$class('container');
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $elm$html$Html$Attributes$classList = function (classes) {
+	return $elm$html$Html$Attributes$class(
+		A2(
+			$elm$core$String$join,
+			' ',
+			A2(
+				$elm$core$List$map,
+				$elm$core$Tuple$first,
+				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
+};
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$virtual_dom$VirtualDom$property = F2(
 	function (key, value) {
@@ -5983,13 +6249,33 @@ var $author$project$Media$Attributes$crossOrigin = function (policy) {
 		'crossOrigin',
 		$elm$json$Json$Encode$string(policyString));
 };
+var $author$project$Media$State$currentTime = function (state) {
+	var iState = state.a;
+	return iState.currentTime;
+};
+var $elm$core$Basics$truncate = _Basics_truncate;
+var $author$project$Main$currentSecond = function (state) {
+	return $author$project$Media$State$currentTime(state) | 0;
+};
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $author$project$TW$mx_auto = $elm$html$Html$Attributes$class('mx-auto');
+var $author$project$Media$State$duration = function (state) {
+	var iState = state.a;
+	return iState.duration;
+};
+var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 	return _VirtualDom_keyedNode(
 		_VirtualDom_noScript(tag));
 };
 var $elm$html$Html$Keyed$node = $elm$virtual_dom$VirtualDom$keyedNode;
+var $author$project$Main$Close = {$: 'Close'};
+var $elm$html$Html$a = _VirtualDom_node('a');
+var $elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -6006,61 +6292,152 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
-var $author$project$Media$State$Buffering = {$: 'Buffering'};
-var $author$project$Media$State$Ended = {$: 'Ended'};
-var $author$project$Media$State$Loading = {$: 'Loading'};
-var $author$project$Media$State$Paused = {$: 'Paused'};
-var $author$project$Media$State$PlaybackError = function (a) {
-	return {$: 'PlaybackError', a: a};
+var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $author$project$Main$linkOverlay = function (item) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$classList(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('flex', true),
+						_Utils_Tuple2('flex-col', true),
+						_Utils_Tuple2('flex-grow', true)
+					]))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('absolute', true),
+								_Utils_Tuple2('w-full', true),
+								_Utils_Tuple2('h-full', true),
+								_Utils_Tuple2('left-0', true),
+								_Utils_Tuple2('top-0', true),
+								_Utils_Tuple2('bg-gray_800', true),
+								_Utils_Tuple2('opacity-75', true),
+								_Utils_Tuple2('text-center', true)
+							])),
+						$elm$html$Html$Events$onClick($author$project$Main$Close)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$a,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$href(item.href),
+								$elm$html$Html$Attributes$target('_blank')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(item.text)
+							]))
+					]))
+			]));
 };
-var $author$project$Media$State$Playing = {$: 'Playing'};
-var $author$project$Media$State$Aborted = function (a) {
-	return {$: 'Aborted', a: a};
+var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
+var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $author$project$Media$State$Decode = function (a) {
-	return {$: 'Decode', a: a};
+var $author$project$Main$photoOverlay = function (item) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$classList(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('flex', true),
+						_Utils_Tuple2('flex-col', true),
+						_Utils_Tuple2('flex-grow', true)
+					]))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('absolute', true),
+								_Utils_Tuple2('w-full', true),
+								_Utils_Tuple2('h-full', true),
+								_Utils_Tuple2('left-0', true),
+								_Utils_Tuple2('top-0', true),
+								_Utils_Tuple2('bg-gray_800', true),
+								_Utils_Tuple2('opacity-100', true)
+							])),
+						$elm$html$Html$Events$onClick($author$project$Main$Close)
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$elm$html$Html$img,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$src(item.src),
+								$elm$html$Html$Attributes$alt(item.alt),
+								$elm$html$Html$Attributes$class('object-cover'),
+								$elm$html$Html$Attributes$class('w-full'),
+								$elm$html$Html$Attributes$class('h-full')
+							]),
+						_List_Nil)
+					]))
+			]));
 };
-var $author$project$Media$State$Network = function (a) {
-	return {$: 'Network', a: a};
-};
-var $author$project$Media$State$Unsupported = function (a) {
-	return {$: 'Unsupported', a: a};
-};
-var $author$project$Media$State$toPlaybackError = function (err) {
-	switch (err.$) {
-		case 'Aborted':
-			var s = err.a;
-			return $author$project$Media$State$Aborted(s);
-		case 'Network':
-			var s = err.a;
-			return $author$project$Media$State$Network(s);
-		case 'Decode':
-			var s = err.a;
-			return $author$project$Media$State$Decode(s);
-		default:
-			var s = err.a;
-			return $author$project$Media$State$Unsupported(s);
-	}
-};
-var $author$project$Media$State$playbackStatus = function (state) {
-	var s = state.a;
-	var _v1 = s.playbackStatus;
-	switch (_v1.$) {
-		case 'Paused':
-			return $author$project$Media$State$Paused;
-		case 'Playing':
-			return $author$project$Media$State$Playing;
-		case 'Loading':
-			return $author$project$Media$State$Loading;
-		case 'Buffering':
-			return $author$project$Media$State$Buffering;
-		case 'Ended':
-			return $author$project$Media$State$Ended;
-		default:
-			var p = _v1.a;
-			return $author$project$Media$State$PlaybackError(
-				$author$project$Media$State$toPlaybackError(p));
-	}
+var $author$project$Main$textOverlay = function (txt) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$classList(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('flex', true),
+						_Utils_Tuple2('flex-col', true),
+						_Utils_Tuple2('flex-grow', true)
+					]))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('absolute', true),
+								_Utils_Tuple2('w-full', true),
+								_Utils_Tuple2('h-full', true),
+								_Utils_Tuple2('left-0', true),
+								_Utils_Tuple2('top-0', true),
+								_Utils_Tuple2('bg-gray_800', true),
+								_Utils_Tuple2('opacity-50', true),
+								_Utils_Tuple2('text-center', true)
+							])),
+						$elm$html$Html$Events$onClick($author$project$Main$Close)
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(txt)
+					]))
+			]));
 };
 var $author$project$Media$Attributes$playsInline = function (opt) {
 	return A2(
@@ -6068,7 +6445,6 @@ var $author$project$Media$Attributes$playsInline = function (opt) {
 		'playsInline',
 		$elm$json$Json$Encode$bool(opt));
 };
-var $elm$core$String$fromFloat = _String_fromNumber;
 var $author$project$Media$Source$fragmentToString = function (fragment) {
 	switch (fragment.$) {
 		case 'Temporal':
@@ -6171,12 +6547,6 @@ var $elm$core$List$isEmpty = function (xs) {
 	}
 };
 var $elm$html$Html$source = _VirtualDom_node('source');
-var $elm$html$Html$Attributes$src = function (url) {
-	return A2(
-		$elm$html$Html$Attributes$stringProperty,
-		'src',
-		_VirtualDom_noJavaScriptOrHtmlUri(url));
-};
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $author$project$Media$Source$source = F2(
 	function (url, attrs) {
@@ -6237,8 +6607,6 @@ var $author$project$Media$Source$source = F2(
 				sourceAttributes),
 			_List_Nil);
 	});
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $author$project$Media$video = F3(
 	function (state, attrs, children) {
@@ -6252,6 +6620,232 @@ var $author$project$Media$video = F3(
 				attrs),
 			children);
 	});
+var $author$project$Main$videoOverlay = function (src) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$classList(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('flex', true),
+						_Utils_Tuple2('flex_col', true),
+						_Utils_Tuple2('flex_grow', true)
+					]))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('absolute', true),
+								_Utils_Tuple2('w_full', true),
+								_Utils_Tuple2('h_full', true),
+								_Utils_Tuple2('left_0', true),
+								_Utils_Tuple2('top_0', true),
+								_Utils_Tuple2('bg_gray_800', true),
+								_Utils_Tuple2('opacity_100', true)
+							]))
+					]),
+				_List_fromArray(
+					[
+						A3(
+						$elm$html$Html$Keyed$node,
+						'div',
+						_List_Nil,
+						_List_fromArray(
+							[
+								_Utils_Tuple2(
+								'video',
+								A3(
+									$author$project$Media$video,
+									$author$project$Media$newVideo('overlay video'),
+									_List_fromArray(
+										[
+											$author$project$Media$Attributes$playsInline(true),
+											$author$project$Media$Attributes$controls(true),
+											$author$project$Media$Attributes$crossOrigin($author$project$Media$Attributes$anonymous)
+										]),
+									_List_fromArray(
+										[
+											_Utils_Tuple2(
+											'source',
+											A2($author$project$Media$Source$source, src, _List_Nil))
+										])))
+							]))
+					]))
+			]));
+};
+var $author$project$Main$overlay = function (model) {
+	var _v0 = model.currentOverlay;
+	if (_v0.$ === 'Nothing') {
+		return _Utils_Tuple2(
+			'div',
+			A2($elm$html$Html$div, _List_Nil, _List_Nil));
+	} else {
+		var o = _v0.a;
+		var _v1 = o.content;
+		switch (_v1.$) {
+			case 'Text':
+				var t = _v1.a;
+				return _Utils_Tuple2(
+					'div',
+					$author$project$Main$textOverlay(t));
+			case 'Link':
+				var item = _v1.a;
+				return _Utils_Tuple2(
+					'div',
+					$author$project$Main$linkOverlay(item));
+			case 'Photo':
+				var item = _v1.a;
+				return _Utils_Tuple2(
+					'div',
+					$author$project$Main$photoOverlay(item));
+			default:
+				var src = _v1.a;
+				return _Utils_Tuple2(
+					'div',
+					$author$project$Main$videoOverlay(src));
+		}
+	}
+};
+var $author$project$Main$Show = function (a) {
+	return {$: 'Show', a: a};
+};
+var $elm$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			if (dict.$ === 'RBEmpty_elm_builtin') {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
+				switch (_v1.$) {
+					case 'LT':
+						var $temp$targetKey = targetKey,
+							$temp$dict = left;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+					case 'EQ':
+						return $elm$core$Maybe$Just(value);
+					default:
+						var $temp$targetKey = targetKey,
+							$temp$dict = right;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+				}
+			}
+		}
+	});
+var $elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm_community$list_extra$List$Extra$getAt = F2(
+	function (idx, xs) {
+		return (idx < 0) ? $elm$core$Maybe$Nothing : $elm$core$List$head(
+			A2($elm$core$List$drop, idx, xs));
+	});
+var $author$project$Main$toggleOverlayButtonVisibility = function (model) {
+	var _v0 = model.currentOverlay;
+	if (_v0.$ === 'Nothing') {
+		return 'visible';
+	} else {
+		return 'invisible';
+	}
+};
+var $author$project$Main$overlayControl = function (model) {
+	var s = $author$project$Main$currentSecond(model.state);
+	var overlayIndex = function () {
+		var _v2 = A2($elm$core$Dict$get, s, model.data);
+		if (_v2.$ === 'Nothing') {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var i = _v2.a;
+			return i;
+		}
+	}();
+	var overlay_ = function () {
+		if (overlayIndex.$ === 'Nothing') {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var index = overlayIndex.a;
+			return A2($elm_community$list_extra$List$Extra$getAt, index, model.overlays);
+		}
+	}();
+	if (overlay_.$ === 'Nothing') {
+		return _Utils_Tuple2(
+			'div',
+			A2($elm$html$Html$div, _List_Nil, _List_Nil));
+	} else {
+		var o = overlay_.a;
+		return _Utils_Tuple2(
+			'div',
+			A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('absolute', true),
+								_Utils_Tuple2('bg_gray_800', true),
+								_Utils_Tuple2('opacity_75', true),
+								_Utils_Tuple2('px_4', true),
+								_Utils_Tuple2('py_2', true),
+								_Utils_Tuple2('text_center', true),
+								_Utils_Tuple2('text_white', true),
+								_Utils_Tuple2('top_0', true),
+								_Utils_Tuple2(
+								$author$project$Main$toggleOverlayButtonVisibility(model),
+								true)
+							])),
+						$elm$html$Html$Events$onClick(
+						$author$project$Main$Show(o))
+					]),
+				_List_fromArray(
+					[
+						$elm$html$Html$text(o.buttonText)
+					])));
+	}
+};
+var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$Main$view = function (model) {
 	var videoElement = _Utils_Tuple2(
 		'video',
@@ -6270,63 +6864,79 @@ var $author$project$Main$view = function (model) {
 				[
 					_Utils_Tuple2(
 					'source',
-					A2($author$project$Media$Source$source, '../assets/master.mp4', _List_Nil))
+					A2($author$project$Media$Source$source, '/assets/master.mp4', _List_Nil))
 				])));
-	var playPauseButton = function () {
-		var _v0 = $author$project$Media$State$playbackStatus(model.state);
-		switch (_v0.$) {
-			case 'Playing':
-				return A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							$elm$html$Html$Events$onClick($author$project$Main$Pause)
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Pause')
-						]));
-			case 'Paused':
-				return A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							$elm$html$Html$Events$onClick($author$project$Main$Play)
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Play')
-						]));
-			default:
-				return A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							$elm$html$Html$Events$onClick($author$project$Main$Play)
-						]),
-					_List_fromArray(
-						[
-							$elm$html$Html$text('Other')
-						]));
-		}
-	}();
+	var mediaInfo = _List_fromArray(
+		[
+			A2(
+			$elm$html$Html$p,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					'current time: ' + $elm$core$String$fromFloat(
+						$author$project$Media$State$currentTime(model.state)))
+				])),
+			A2(
+			$elm$html$Html$p,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					'current second: ' + $elm$core$String$fromInt(
+						$author$project$Main$currentSecond(model.state)))
+				])),
+			A2(
+			$elm$html$Html$p,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					'duration: ' + $elm$core$String$fromFloat(
+						$author$project$Media$State$duration(model.state)))
+				])),
+			A2(
+			$elm$html$Html$p,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					'duration in seconds: ' + $elm$core$String$fromInt(
+						$author$project$Media$State$duration(model.state) | 0))
+				]))
+		]);
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
-			[$author$project$TW$container, $author$project$TW$mx_auto]),
+			[
+				$elm$html$Html$Attributes$class('container'),
+				$elm$html$Html$Attributes$class('mx_auto')
+			]),
 		_List_fromArray(
 			[
 				A3(
 				$elm$html$Html$Keyed$node,
 				'div',
-				_List_Nil,
 				_List_fromArray(
-					[videoElement])),
-				A2(
-				$elm$html$Html$div,
-				_List_Nil,
+					[
+						$elm$html$Html$Attributes$classList(
+						_List_fromArray(
+							[
+								_Utils_Tuple2('relative', true),
+								_Utils_Tuple2('top_0', true),
+								_Utils_Tuple2('left_0', true),
+								_Utils_Tuple2('flex', true),
+								_Utils_Tuple2('border_red_600', true),
+								_Utils_Tuple2('border_2', true)
+							]))
+					]),
 				_List_fromArray(
-					[playPauseButton]))
+					[
+						videoElement,
+						$author$project$Main$overlayControl(model),
+						$author$project$Main$overlay(model)
+					])),
+				A2($elm$html$Html$div, _List_Nil, mediaInfo)
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(

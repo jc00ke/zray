@@ -1,11 +1,9 @@
 port module Main exposing (Model, outbound, view)
 
---import Html.Keyed exposing (node)
-
 import Browser
 import Dict exposing (Dict)
 import Html exposing (..)
-import Html.Attributes exposing (alt, href, id, kind, src, srclang, target)
+import Html.Attributes exposing (alt, class, classList, href, id, kind, src, srclang, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
 import Interval exposing (Interval)
@@ -15,7 +13,6 @@ import Media.Attributes exposing (anonymous, autoplay, controls, crossOrigin, la
 import Media.Events
 import Media.Source exposing (mediaCapture, source)
 import Media.State exposing (PlaybackStatus(..), currentTime, duration, playbackStatus, played)
-import TW
 
 
 port outbound : PortMsg -> Cmd msg
@@ -26,11 +23,15 @@ type MediaSource
 
 
 type alias LinkItem =
-    { href : String, text : String }
+    { href : String
+    , text : String
+    }
 
 
 type alias PhotoItem =
-    { src : String, alt : String }
+    { src : String
+    , alt : String
+    }
 
 
 type OverlayContent
@@ -168,15 +169,17 @@ view model =
             , p [] [ text ("duration in seconds: " ++ (model.state |> duration |> truncate |> String.fromInt)) ]
             ]
     in
-    div [ TW.container, TW.mx_auto ]
+    div [ class "container", class "mx-auto" ]
         [ K.node
             "div"
-            [ TW.relative
-            , TW.top_0
-            , TW.left_0
-            , TW.flex
-            , TW.border_red_600
-            , TW.border_2
+            [ classList
+                [ ( "relative", True )
+                , ( "top-0", True )
+                , ( "left-0", True )
+                , ( "flex", True )
+                , ( "border-red-600", True )
+                , ( "border-2", True )
+                ]
             ]
             [ videoElement
             , overlayControl model
@@ -209,17 +212,23 @@ overlay model =
 
 videoOverlay : String -> Html Msg
 videoOverlay src =
-    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+    div
+        [ classList
+            [ ( "flex", True )
+            , ( "flex-col", True )
+            , ( "flex-grow", True )
+            ]
+        ]
         [ div
-            [ TW.absolute
-            , TW.w_full
-            , TW.h_full
-            , TW.left_0
-            , TW.top_0
-            , TW.bg_gray_800
-            , TW.opacity_100
-
-            --, onClick Close
+            [ classList
+                [ ( "absolute", True )
+                , ( "w-full", True )
+                , ( "h-full", True )
+                , ( "left-0", True )
+                , ( "top-0", True )
+                , ( "bg-gray-800", True )
+                , ( "opacity-100", True )
+                ]
             ]
             [ K.node "div"
                 []
@@ -237,34 +246,49 @@ videoOverlay src =
 
 photoOverlay : PhotoItem -> Html Msg
 photoOverlay item =
-    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+    div
+        [ classList
+            [ ( "flex", True )
+            , ( "flex-col", True )
+            , ( "flex-grow", True )
+            ]
+        ]
         [ div
-            [ TW.absolute
-            , TW.w_full
-            , TW.h_full
-            , TW.left_0
-            , TW.top_0
-            , TW.bg_gray_800
-            , TW.opacity_100
+            [ classList
+                [ ( "absolute", True )
+                , ( "w-full", True )
+                , ( "h-full", True )
+                , ( "left-0", True )
+                , ( "top-0", True )
+                , ( "bg-gray_800", True )
+                , ( "opacity-100", True )
+                ]
             , onClick Close
             ]
-            [ img [ src item.src, alt item.alt, TW.object_cover, TW.w_full, TW.h_full ] [] ]
+            [ img [ src item.src, alt item.alt, class "object-cover", class "w-full", class "h-full" ] [] ]
         ]
 
 
 linkOverlay : LinkItem -> Html Msg
 linkOverlay item =
-    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+    div
+        [ classList
+            [ ( "flex", True )
+            , ( "flex-col", True )
+            , ( "flex-grow", True )
+            ]
+        ]
         [ div
-            [ TW.absolute
-            , TW.w_full
-            , TW.h_full
-            , TW.left_0
-            , TW.top_0
-            , TW.opacity_50
-            , TW.bg_gray_800
-            , TW.opacity_50
-            , TW.text_center
+            [ classList
+                [ ( "absolute", True )
+                , ( "w-full", True )
+                , ( "h-full", True )
+                , ( "left-0", True )
+                , ( "top-0", True )
+                , ( "bg-gray-800", True )
+                , ( "opacity-75", True )
+                , ( "text-center", True )
+                ]
             , onClick Close
             ]
             [ a [ href item.href, target "_blank" ] [ text item.text ] ]
@@ -273,39 +297,27 @@ linkOverlay item =
 
 textOverlay : String -> Html Msg
 textOverlay txt =
-    div [ TW.flex, TW.flex_col, TW.flex_grow ]
+    div
+        [ classList
+            [ ( "flex", True )
+            , ( "flex-col", True )
+            , ( "flex-grow", True )
+            ]
+        ]
         [ div
-            [ TW.absolute
-            , TW.w_full
-            , TW.h_full
-            , TW.left_0
-            , TW.top_0
-            , TW.opacity_50
-            , TW.bg_gray_800
-            , TW.opacity_50
-            , TW.text_center
+            [ classList
+                [ ( "absolute", True )
+                , ( "w-full", True )
+                , ( "h-full", True )
+                , ( "left-0", True )
+                , ( "top-0", True )
+                , ( "bg-gray-800", True )
+                , ( "opacity-50", True )
+                , ( "text-center", True )
+                ]
             , onClick Close
             ]
             [ text txt ]
-        ]
-
-
-testOverlay : Html Msg
-testOverlay =
-    div [ TW.flex, TW.flex_col, TW.flex_grow ]
-        [ div
-            [ TW.absolute
-            , TW.w_full
-            , TW.h_full
-            , TW.left_0
-            , TW.top_0
-            , TW.opacity_50
-            , TW.bg_gray_800
-            , TW.opacity_50
-            , TW.text_center
-            , onClick Close
-            ]
-            [ text "OVERLAY!!!" ]
         ]
 
 
@@ -338,29 +350,31 @@ overlayControl model =
         Just o ->
             ( "div"
             , div
-                [ TW.absolute
-                , TW.bg_gray_800
-                , TW.opacity_75
-                , TW.px_4
-                , TW.py_2
-                , TW.text_center
-                , TW.text_white
-                , TW.top_0
+                [ classList
+                    [ ( "absolute", True )
+                    , ( "bg-gray-800", True )
+                    , ( "opacity-75", True )
+                    , ( "px-4", True )
+                    , ( "py-2", True )
+                    , ( "text-center", True )
+                    , ( "text-white", True )
+                    , ( "top-0", True )
+                    , ( toggleOverlayButtonVisibility model, True )
+                    ]
                 , onClick <| Show o
-                , toggleOverlayButtonVisibility model
                 ]
                 [ text o.buttonText ]
             )
 
 
-toggleOverlayButtonVisibility : Model -> Html.Attribute Msg
+toggleOverlayButtonVisibility : Model -> String
 toggleOverlayButtonVisibility model =
     case model.currentOverlay of
         Nothing ->
-            TW.visible
+            "visible"
 
         Just _ ->
-            TW.invisible
+            "invisible"
 
 
 currentSecond : Media.State -> Int

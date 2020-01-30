@@ -1,22 +1,7 @@
-module Media.Attributes
-    exposing
-        ( volume
-        , muted
-        , loop
-        , controls
-        , autoplay
-        , playbackRate
-        , crossOrigin
-        , anonymous
-        , useCredentials
-        , playsInline
-        , poster
-        , preloadAuto
-        , preloadMetadata
-        , preloadNone
-        , mode
-        , label
-        )
+module Media.Attributes exposing
+    ( loop, controls, autoplay, muted, volume, playbackRate, crossOrigin, anonymous, useCredentials, label
+    , mode, playsInline, poster, preloadAuto, preloadMetadata, preloadNone
+    )
 
 {-|
 
@@ -31,11 +16,11 @@ as loop, controls, autoplay are implemented better here, and several new ones ar
 
 -}
 
-import Html.Attributes as Attrs exposing (property, attribute)
 import Html exposing (Attribute)
-import Json.Encode exposing (string, bool, float, int, list)
-import Media.State exposing (TextTrack, TextTrackMode(..), TextTrackKind(..))
+import Html.Attributes as Attrs exposing (attribute, property)
 import Internal.Helpers
+import Json.Encode exposing (bool, float, int, list, string)
+import Media.State exposing (TextTrack, TextTrackKind(..), TextTrackMode(..))
 
 
 {-| -}
@@ -91,7 +76,7 @@ crossOrigin policy =
                 UseCredentials ->
                     "use-credentials"
     in
-        property "crossOrigin" (string policyString)
+    property "crossOrigin" (string policyString)
 
 
 {-| -}
@@ -175,4 +160,4 @@ kind knd =
                 _ ->
                     ""
     in
-        property "kind" <| string kindToString
+    property "kind" <| string kindToString
