@@ -6196,31 +6196,9 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
-var $elm$html$Html$Attributes$classList = function (classes) {
-	return $elm$html$Html$Attributes$class(
-		A2(
-			$elm$core$String$join,
-			' ',
-			A2(
-				$elm$core$List$map,
-				$elm$core$Tuple$first,
-				A2($elm$core$List$filter, $elm$core$Tuple$second, classes))));
-};
+var $author$project$TW$border_2 = $elm$html$Html$Attributes$class('border-2');
+var $author$project$TW$border_red_600 = $elm$html$Html$Attributes$class('border-red-600');
+var $author$project$TW$container = $elm$html$Html$Attributes$class('container');
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$virtual_dom$VirtualDom$property = F2(
 	function (key, value) {
@@ -6262,90 +6240,65 @@ var $author$project$Media$State$duration = function (state) {
 	var iState = state.a;
 	return iState.duration;
 };
+var $author$project$TW$flex = $elm$html$Html$Attributes$class('flex');
 var $elm$core$String$fromFloat = _String_fromNumber;
+var $author$project$TW$left_0 = $elm$html$Html$Attributes$class('left-0');
+var $author$project$TW$mx_auto = $elm$html$Html$Attributes$class('mx-auto');
 var $elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 	return _VirtualDom_keyedNode(
 		_VirtualDom_noScript(tag));
 };
 var $elm$html$Html$Keyed$node = $elm$virtual_dom$VirtualDom$keyedNode;
-var $author$project$Main$Close = {$: 'Close'};
 var $elm$html$Html$a = _VirtualDom_node('a');
+var $author$project$TW$absolute = $elm$html$Html$Attributes$class('absolute');
+var $author$project$TW$bg_gray_800 = $elm$html$Html$Attributes$class('bg-gray-800');
+var $author$project$TW$flex_col = $elm$html$Html$Attributes$class('flex-col');
+var $author$project$TW$flex_grow = $elm$html$Html$Attributes$class('flex-grow');
+var $author$project$TW$h_full = $elm$html$Html$Attributes$class('h-full');
+var $author$project$TW$opacity_100 = $elm$html$Html$Attributes$class('opacity-100');
+var $author$project$TW$top_0 = $elm$html$Html$Attributes$class('top-0');
+var $author$project$TW$w_full = $elm$html$Html$Attributes$class('w-full');
+var $author$project$Main$contentOverlay = function (element) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[$author$project$TW$flex, $author$project$TW$flex_col, $author$project$TW$flex_grow]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[$author$project$TW$absolute, $author$project$TW$w_full, $author$project$TW$h_full, $author$project$TW$left_0, $author$project$TW$top_0, $author$project$TW$bg_gray_800, $author$project$TW$opacity_100]),
+				_List_fromArray(
+					[element]))
+			]));
+};
 var $elm$html$Html$Attributes$href = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
 		'href',
 		_VirtualDom_noJavaScriptUri(url));
 };
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
 var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $author$project$Main$linkOverlay = function (item) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$classList(
-				_List_fromArray(
-					[
-						_Utils_Tuple2('flex', true),
-						_Utils_Tuple2('flex-col', true),
-						_Utils_Tuple2('flex-grow', true)
-					]))
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$classList(
-						_List_fromArray(
-							[
-								_Utils_Tuple2('absolute', true),
-								_Utils_Tuple2('w-full', true),
-								_Utils_Tuple2('h-full', true),
-								_Utils_Tuple2('left-0', true),
-								_Utils_Tuple2('top-0', true),
-								_Utils_Tuple2('bg-gray-800', true),
-								_Utils_Tuple2('opacity-75', true),
-								_Utils_Tuple2('text-center', true)
-							])),
-						$elm$html$Html$Events$onClick($author$project$Main$Close)
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$a,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$href(item.href),
-								$elm$html$Html$Attributes$target('_blank')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(item.text)
-							]))
-					]))
-			]));
+	return $author$project$Main$contentOverlay(
+		A2(
+			$elm$html$Html$a,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$href(item.href),
+					$elm$html$Html$Attributes$target('_blank')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(item.text)
+				])));
 };
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$html$Html$img = _VirtualDom_node('img');
+var $author$project$TW$object_cover = $elm$html$Html$Attributes$class('object-cover');
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
@@ -6353,91 +6306,22 @@ var $elm$html$Html$Attributes$src = function (url) {
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
 var $author$project$Main$photoOverlay = function (item) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$classList(
-				_List_fromArray(
-					[
-						_Utils_Tuple2('flex', true),
-						_Utils_Tuple2('flex-col', true),
-						_Utils_Tuple2('flex-grow', true)
-					]))
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$classList(
-						_List_fromArray(
-							[
-								_Utils_Tuple2('absolute', true),
-								_Utils_Tuple2('w-full', true),
-								_Utils_Tuple2('h-full', true),
-								_Utils_Tuple2('left-0', true),
-								_Utils_Tuple2('top-0', true),
-								_Utils_Tuple2('bg-gray_800', true),
-								_Utils_Tuple2('opacity-100', true)
-							])),
-						$elm$html$Html$Events$onClick($author$project$Main$Close)
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$img,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$src(item.src),
-								$elm$html$Html$Attributes$alt(item.alt),
-								$elm$html$Html$Attributes$class('object-cover'),
-								$elm$html$Html$Attributes$class('w-full'),
-								$elm$html$Html$Attributes$class('h-full')
-							]),
-						_List_Nil)
-					]))
-			]));
+	return $author$project$Main$contentOverlay(
+		A2(
+			$elm$html$Html$img,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$src(item.src),
+					$elm$html$Html$Attributes$alt(item.alt),
+					$author$project$TW$object_cover,
+					$author$project$TW$w_full,
+					$author$project$TW$h_full
+				]),
+			_List_Nil));
 };
 var $author$project$Main$textOverlay = function (txt) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$classList(
-				_List_fromArray(
-					[
-						_Utils_Tuple2('flex', true),
-						_Utils_Tuple2('flex-col', true),
-						_Utils_Tuple2('flex-grow', true)
-					]))
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$classList(
-						_List_fromArray(
-							[
-								_Utils_Tuple2('absolute', true),
-								_Utils_Tuple2('w-full', true),
-								_Utils_Tuple2('h-full', true),
-								_Utils_Tuple2('left-0', true),
-								_Utils_Tuple2('top-0', true),
-								_Utils_Tuple2('bg-gray-800', true),
-								_Utils_Tuple2('opacity-50', true),
-								_Utils_Tuple2('text-center', true)
-							])),
-						$elm$html$Html$Events$onClick($author$project$Main$Close)
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(txt)
-					]))
-			]));
+	return $author$project$Main$contentOverlay(
+		$elm$html$Html$text(txt));
 };
 var $author$project$Media$Attributes$playsInline = function (opt) {
 	return A2(
@@ -6621,64 +6505,31 @@ var $author$project$Media$video = F3(
 			children);
 	});
 var $author$project$Main$videoOverlay = function (src) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$classList(
-				_List_fromArray(
-					[
-						_Utils_Tuple2('flex', true),
-						_Utils_Tuple2('flex-col', true),
-						_Utils_Tuple2('flex-grow', true)
-					]))
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$classList(
+	return $author$project$Main$contentOverlay(
+		A3(
+			$elm$html$Html$Keyed$node,
+			'div',
+			_List_Nil,
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					'video',
+					A3(
+						$author$project$Media$video,
+						$author$project$Media$newVideo('overlay video'),
 						_List_fromArray(
 							[
-								_Utils_Tuple2('absolute', true),
-								_Utils_Tuple2('w-full', true),
-								_Utils_Tuple2('h-full', true),
-								_Utils_Tuple2('left-0', true),
-								_Utils_Tuple2('top-0', true),
-								_Utils_Tuple2('bg-gray-800', true),
-								_Utils_Tuple2('opacity-100', true)
-							]))
-					]),
-				_List_fromArray(
-					[
-						A3(
-						$elm$html$Html$Keyed$node,
-						'div',
-						_List_Nil,
+								$author$project$Media$Attributes$playsInline(true),
+								$author$project$Media$Attributes$controls(true),
+								$author$project$Media$Attributes$crossOrigin($author$project$Media$Attributes$anonymous)
+							]),
 						_List_fromArray(
 							[
 								_Utils_Tuple2(
-								'video',
-								A3(
-									$author$project$Media$video,
-									$author$project$Media$newVideo('overlay video'),
-									_List_fromArray(
-										[
-											$author$project$Media$Attributes$playsInline(true),
-											$author$project$Media$Attributes$controls(true),
-											$author$project$Media$Attributes$crossOrigin($author$project$Media$Attributes$anonymous)
-										]),
-									_List_fromArray(
-										[
-											_Utils_Tuple2(
-											'source',
-											A2($author$project$Media$Source$source, src, _List_Nil))
-										])))
-							]))
-					]))
-			]));
+								'source',
+								A2($author$project$Media$Source$source, src, _List_Nil))
+							])))
+				])));
 };
 var $author$project$Main$overlay = function (model) {
 	var _v0 = model.currentOverlay;
@@ -6782,12 +6633,35 @@ var $elm_community$list_extra$List$Extra$getAt = F2(
 		return (idx < 0) ? $elm$core$Maybe$Nothing : $elm$core$List$head(
 			A2($elm$core$List$drop, idx, xs));
 	});
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $author$project$TW$opacity_75 = $elm$html$Html$Attributes$class('opacity-75');
+var $author$project$TW$px_4 = $elm$html$Html$Attributes$class('px-4');
+var $author$project$TW$py_2 = $elm$html$Html$Attributes$class('py-2');
+var $author$project$TW$text_center = $elm$html$Html$Attributes$class('text-center');
+var $author$project$TW$text_white = $elm$html$Html$Attributes$class('text-white');
+var $author$project$TW$invisible = $elm$html$Html$Attributes$class('invisible');
+var $author$project$TW$visible = $elm$html$Html$Attributes$class('visible');
 var $author$project$Main$toggleOverlayButtonVisibility = function (model) {
 	var _v0 = model.currentOverlay;
 	if (_v0.$ === 'Nothing') {
-		return 'visible';
+		return $author$project$TW$visible;
 	} else {
-		return 'invisible';
+		return $author$project$TW$invisible;
 	}
 };
 var $author$project$Main$overlayControl = function (model) {
@@ -6821,21 +6695,15 @@ var $author$project$Main$overlayControl = function (model) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$classList(
-						_List_fromArray(
-							[
-								_Utils_Tuple2('absolute', true),
-								_Utils_Tuple2('bg-gray-800', true),
-								_Utils_Tuple2('opacity-75', true),
-								_Utils_Tuple2('px-4', true),
-								_Utils_Tuple2('py-2', true),
-								_Utils_Tuple2('text-center', true),
-								_Utils_Tuple2('text-white', true),
-								_Utils_Tuple2('top-0', true),
-								_Utils_Tuple2(
-								$author$project$Main$toggleOverlayButtonVisibility(model),
-								true)
-							])),
+						$author$project$TW$top_0,
+						$author$project$TW$absolute,
+						$author$project$TW$bg_gray_800,
+						$author$project$TW$opacity_75,
+						$author$project$TW$px_4,
+						$author$project$TW$py_2,
+						$author$project$TW$text_center,
+						$author$project$TW$text_white,
+						$author$project$Main$toggleOverlayButtonVisibility(model),
 						$elm$html$Html$Events$onClick(
 						$author$project$Main$Show(o))
 					]),
@@ -6846,6 +6714,7 @@ var $author$project$Main$overlayControl = function (model) {
 	}
 };
 var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$TW$relative = $elm$html$Html$Attributes$class('relative');
 var $author$project$Main$view = function (model) {
 	var videoElement = _Utils_Tuple2(
 		'video',
@@ -6908,28 +6777,14 @@ var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('container'),
-				$elm$html$Html$Attributes$class('mx-auto')
-			]),
+			[$author$project$TW$container, $author$project$TW$mx_auto]),
 		_List_fromArray(
 			[
 				A3(
 				$elm$html$Html$Keyed$node,
 				'div',
 				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$classList(
-						_List_fromArray(
-							[
-								_Utils_Tuple2('relative', true),
-								_Utils_Tuple2('top-0', true),
-								_Utils_Tuple2('left-0', true),
-								_Utils_Tuple2('flex', true),
-								_Utils_Tuple2('border-red-600', true),
-								_Utils_Tuple2('border-2', true)
-							]))
-					]),
+					[$author$project$TW$relative, $author$project$TW$top_0, $author$project$TW$left_0, $author$project$TW$flex, $author$project$TW$border_red_600, $author$project$TW$border_2]),
 				_List_fromArray(
 					[
 						videoElement,

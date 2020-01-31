@@ -3,7 +3,7 @@ port module Main exposing (Model, outbound, view)
 import Browser
 import Dict exposing (Dict)
 import Html exposing (Html, a, div, img, p, text)
-import Html.Attributes exposing (alt, class, classList, href, src, target)
+import Html.Attributes exposing (alt, href, src, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
 import Interval exposing (Interval)
@@ -13,6 +13,7 @@ import Media.Attributes exposing (anonymous, controls, crossOrigin, playsInline)
 import Media.Events
 import Media.Source exposing (source)
 import Media.State exposing (PlaybackStatus(..), currentTime, duration)
+import TW
 
 
 port outbound : PortMsg -> Cmd msg
@@ -169,17 +170,15 @@ view model =
             , p [] [ text ("duration in seconds: " ++ (model.state |> duration |> truncate |> String.fromInt)) ]
             ]
     in
-    div [ class "container", class "mx-auto" ]
+    div [ TW.container, TW.mx_auto ]
         [ K.node
             "div"
-            [ classList
-                [ ( "relative", True )
-                , ( "top-0", True )
-                , ( "left-0", True )
-                , ( "flex", True )
-                , ( "border-red-600", True )
-                , ( "border-2", True )
-                ]
+            [ TW.relative
+            , TW.top_0
+            , TW.left_0
+            , TW.flex
+            , TW.border_red_600
+            , TW.border_2
             ]
             [ videoElement
             , overlayControl model
@@ -210,115 +209,45 @@ overlay model =
                     ( "div", videoOverlay src )
 
 
+contentOverlay : Html Msg -> Html Msg
+contentOverlay element =
+    div
+        [ TW.flex, TW.flex_col, TW.flex_grow ]
+        [ div
+            [ TW.absolute, TW.w_full, TW.h_full, TW.left_0, TW.top_0, TW.bg_gray_800, TW.opacity_100 ]
+            [ element ]
+        ]
+
+
 videoOverlay : String -> Html Msg
 videoOverlay src =
-    div
-        [ classList
-            [ ( "flex", True )
-            , ( "flex-col", True )
-            , ( "flex-grow", True )
+    contentOverlay <|
+        K.node
+            "div"
+            []
+            [ ( "video"
+              , Media.video
+                    (newVideo "overlay video")
+                    [ playsInline True, controls True, crossOrigin anonymous ]
+                    [ ( "source", Media.Source.source src [] )
+                    ]
+              )
             ]
-        ]
-        [ div
-            [ classList
-                [ ( "absolute", True )
-                , ( "w-full", True )
-                , ( "h-full", True )
-                , ( "left-0", True )
-                , ( "top-0", True )
-                , ( "bg-gray-800", True )
-                , ( "opacity-100", True )
-                ]
-            ]
-            [ K.node "div"
-                []
-                [ ( "video"
-                  , Media.video
-                        (newVideo "overlay video")
-                        [ playsInline True, controls True, crossOrigin anonymous ]
-                        [ ( "source", Media.Source.source src [] )
-                        ]
-                  )
-                ]
-            ]
-        ]
 
 
 photoOverlay : PhotoItem -> Html Msg
 photoOverlay item =
-    div
-        [ classList
-            [ ( "flex", True )
-            , ( "flex-col", True )
-            , ( "flex-grow", True )
-            ]
-        ]
-        [ div
-            [ classList
-                [ ( "absolute", True )
-                , ( "w-full", True )
-                , ( "h-full", True )
-                , ( "left-0", True )
-                , ( "top-0", True )
-                , ( "bg-gray_800", True )
-                , ( "opacity-100", True )
-                ]
-            , onClick Close
-            ]
-            [ img [ src item.src, alt item.alt, class "object-cover", class "w-full", class "h-full" ] [] ]
-        ]
+    contentOverlay <| img [ src item.src, alt item.alt, TW.object_cover, TW.w_full, TW.h_full ] []
 
 
 linkOverlay : LinkItem -> Html Msg
 linkOverlay item =
-    div
-        [ classList
-            [ ( "flex", True )
-            , ( "flex-col", True )
-            , ( "flex-grow", True )
-            ]
-        ]
-        [ div
-            [ classList
-                [ ( "absolute", True )
-                , ( "w-full", True )
-                , ( "h-full", True )
-                , ( "left-0", True )
-                , ( "top-0", True )
-                , ( "bg-gray-800", True )
-                , ( "opacity-75", True )
-                , ( "text-center", True )
-                ]
-            , onClick Close
-            ]
-            [ a [ href item.href, target "_blank" ] [ text item.text ] ]
-        ]
+    contentOverlay <| a [ href item.href, target "_blank" ] [ text item.text ]
 
 
 textOverlay : String -> Html Msg
 textOverlay txt =
-    div
-        [ classList
-            [ ( "flex", True )
-            , ( "flex-col", True )
-            , ( "flex-grow", True )
-            ]
-        ]
-        [ div
-            [ classList
-                [ ( "absolute", True )
-                , ( "w-full", True )
-                , ( "h-full", True )
-                , ( "left-0", True )
-                , ( "top-0", True )
-                , ( "bg-gray-800", True )
-                , ( "opacity-50", True )
-                , ( "text-center", True )
-                ]
-            , onClick Close
-            ]
-            [ text txt ]
-        ]
+    contentOverlay <| text txt
 
 
 overlayControl : Model -> ( String, Html Msg )
@@ -350,31 +279,29 @@ overlayControl model =
         Just o ->
             ( "div"
             , div
-                [ classList
-                    [ ( "absolute", True )
-                    , ( "bg-gray-800", True )
-                    , ( "opacity-75", True )
-                    , ( "px-4", True )
-                    , ( "py-2", True )
-                    , ( "text-center", True )
-                    , ( "text-white", True )
-                    , ( "top-0", True )
-                    , ( toggleOverlayButtonVisibility model, True )
-                    ]
+                [ TW.top_0
+                , TW.absolute
+                , TW.bg_gray_800
+                , TW.opacity_75
+                , TW.px_4
+                , TW.py_2
+                , TW.text_center
+                , TW.text_white
+                , toggleOverlayButtonVisibility model
                 , onClick <| Show o
                 ]
                 [ text o.buttonText ]
             )
 
 
-toggleOverlayButtonVisibility : Model -> String
+toggleOverlayButtonVisibility : Model -> Html.Attribute msg
 toggleOverlayButtonVisibility model =
     case model.currentOverlay of
         Nothing ->
-            "visible"
+            TW.visible
 
         Just _ ->
-            "invisible"
+            TW.invisible
 
 
 currentSecond : Media.State -> Int
