@@ -14,6 +14,11 @@ absolute =
     A.class "absolute"
 
 
+bg_blue_500 : Html.Attribute msg
+bg_blue_500 =
+    A.class "bg-blue-500"
+
+
 bg_gray_800 : Html.Attribute msg
 bg_gray_800 =
     A.class "bg-gray-800"
@@ -49,9 +54,19 @@ flex_grow =
     A.class "flex-grow"
 
 
+font_bold : Html.Attribute msg
+font_bold =
+    A.class "font-bold"
+
+
 h_full : Html.Attribute msg
 h_full =
     A.class "h-full"
+
+
+hover_bg_blue_600 : Html.Attribute msg
+hover_bg_blue_600 =
+    A.class "hover:bg-blue-600"
 
 
 invisible : Html.Attribute msg
@@ -84,6 +99,11 @@ opacity_100 =
     A.class "opacity-100"
 
 
+p_10 : Html.Attribute msg
+p_10 =
+    A.class "p-10"
+
+
 px_4 : Html.Attribute msg
 px_4 =
     A.class "px-4"
@@ -97,6 +117,11 @@ py_2 =
 relative : Html.Attribute msg
 relative =
     A.class "relative"
+
+
+rounded : Html.Attribute msg
+rounded =
+    A.class "rounded"
 
 
 text_center : Html.Attribute msg
@@ -127,3 +152,8 @@ visible =
 w_full : Html.Attribute msg
 w_full =
     A.class "w-full"
+
+
+z_10 : Html.Attribute msg
+z_10 =
+    A.class "z-10"

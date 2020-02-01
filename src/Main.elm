@@ -2,8 +2,8 @@ port module Main exposing (Model, outbound, view)
 
 import Browser
 import Dict exposing (Dict)
-import Html exposing (Html, a, div, img, p, text)
-import Html.Attributes exposing (alt, href, src, target)
+import Html exposing (Html, a, div, img, p, span, text)
+import Html.Attributes exposing (alt, class, href, src, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
 import Interval exposing (Interval)
@@ -68,7 +68,7 @@ type Msg
 
 
 testTextOverlay =
-    { interval = Interval.from 22 30
+    { interval = Interval.from 1 4
     , buttonText = "Click for Location"
     , content = Text "Filmed at the Orcas Center, Madrona Room on December 19, 2019"
     }
@@ -89,7 +89,7 @@ testPhotoOverlay =
 
 
 testVideoOverlay =
-    { interval = Interval.from 1 4
+    { interval = Interval.from 41 44
     , buttonText = "Click for Video"
     , content = Video "assets/vo1.mp4"
     }
@@ -182,6 +182,7 @@ view model =
             ]
             [ videoElement
             , overlayControl model
+            , overlayCloseControl model
             , overlay model
             ]
         , div [] mediaInfo
@@ -212,9 +213,20 @@ overlay model =
 contentOverlay : Html Msg -> Html Msg
 contentOverlay element =
     div
-        [ TW.flex, TW.flex_col, TW.flex_grow ]
+        [ TW.flex
+        , TW.flex_col
+        , TW.flex_grow
+        ]
         [ div
-            [ TW.absolute, TW.w_full, TW.h_full, TW.left_0, TW.top_0, TW.bg_gray_800, TW.opacity_100 ]
+            [ TW.absolute
+            , TW.w_full
+            , TW.h_full
+            , TW.left_0
+            , TW.top_0
+            , TW.bg_gray_800
+            , TW.opacity_100
+            , TW.p_10
+            ]
             [ element ]
         ]
 
@@ -250,6 +262,38 @@ textOverlay txt =
     contentOverlay <| text txt
 
 
+overlayCloseControl : Model -> ( String, Html Msg )
+overlayCloseControl model =
+    case model.currentOverlay of
+        Nothing ->
+            ( "div", div [] [] )
+
+        Just o ->
+            ( "div"
+            , div
+                [ TW.top_0
+                , TW.absolute
+                , TW.z_10
+                ]
+                [ button "Close" Close ]
+            )
+
+
+button : String -> Msg -> Html Msg
+button txt action =
+    Html.button
+        [ onClick action
+        , TW.bg_blue_500
+        , TW.hover_bg_blue_600
+        , TW.text_white
+        , TW.font_bold
+        , TW.py_2
+        , TW.px_4
+        , TW.rounded
+        ]
+        [ text txt ]
+
+
 overlayControl : Model -> ( String, Html Msg )
 overlayControl model =
     let
@@ -281,16 +325,10 @@ overlayControl model =
             , div
                 [ TW.top_0
                 , TW.absolute
-                , TW.bg_gray_800
-                , TW.opacity_75
-                , TW.px_4
-                , TW.py_2
-                , TW.text_center
-                , TW.text_white
                 , toggleOverlayButtonVisibility model
                 , onClick <| Show o
                 ]
-                [ text o.buttonText ]
+                [ button o.buttonText (Show o) ]
             )
 
 
