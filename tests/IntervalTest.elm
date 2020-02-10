@@ -1,8 +1,8 @@
 module IntervalTest exposing (..)
 
 import Expect
-import Fuzz exposing (Fuzzer, int, list, string)
-import Interval exposing (Interval)
+import Fuzz exposing (int)
+import Interval
 import Main exposing (formattedStringToIntInterval)
 import Test exposing (..)
 
