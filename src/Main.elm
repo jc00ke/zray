@@ -1,14 +1,23 @@
-port module Main exposing (Model, formattedStringToIntInterval, outbound, view)
+port module Main exposing
+    ( Model
+    , OverlayContent(..)
+    , formattedStringToIntInterval
+    , intervalDecoder
+    , outbound
+    , overlayDecoder
+    , textOverlayDecoder
+    , view
+    )
 
 import Browser
 import Dict exposing (Dict)
-import Html exposing (Html, a, div, img, p, span, text)
-import Html.Attributes exposing (alt, class, href, src, target)
+import Html exposing (Html, a, div, img, p, text)
+import Html.Attributes exposing (alt, href, src, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
 import Interval exposing (Interval)
-import Json.Decode as D exposing (Decoder, field, int, string)
-import Json.Decode.Pipeline exposing (hardcoded, optional, required)
+import Json.Decode as D exposing (Decoder, field, string)
+import Json.Decode.Pipeline exposing (custom, required)
 import List.Extra
 import Media exposing (PortMsg, newVideo, pause, play)
 import Media.Attributes exposing (anonymous, controls, crossOrigin, playsInline)
@@ -410,19 +419,81 @@ formattedStringToIntInterval s =
             Interval.from 0 0
 
 
+intervalDecoder : Decoder (Interval Int)
+intervalDecoder =
+    string
+        |> D.andThen
+            (\s ->
+                D.succeed <| formattedStringToIntInterval s
+            )
 
---intervalDecoder : Decoder Interval Int
---intervalDecoder =
---string
---|> D.andThen
---(\s ->
---s
---|> String.split "-"
---|> List.map2 String.toInt
---)
---textOverlayDecoder : Decoder Overlay
---textOverlayDecoder =
---D.succeed Overlay
---|> custom D.field ("interval" string |> D.andThen intervalDecoder)
---|> required "buttonText" String
---|> required "overlay" Overlay
+
+overlayContentDecoder : Decoder OverlayContent
+overlayContentDecoder =
+    field "type" string
+        |> D.andThen
+            (\t ->
+                case t of
+                    "text" ->
+                        D.succeed (Text t)
+
+                    _ ->
+                        D.fail "Unknown overlay type"
+            )
+
+
+textOverlayDecoder : Decoder OverlayContent
+textOverlayDecoder =
+    string
+        |> D.andThen
+            (\s ->
+                D.succeed (Text s)
+            )
+
+
+overlayDecoder : Decoder Overlay
+overlayDecoder =
+    D.succeed Overlay
+        |> custom (field "interval" intervalDecoder)
+        |> required "buttonText" string
+        |> required "overlay" overlayContentDecoder
+
+
+
+{-
+   {
+       "mainVideoUrl": "https://example.com/video.mp4",
+       "videoLength": 50,
+       "overlays": [
+           {
+               "interval": "1|4",
+               "buttonText": "Click me!",
+               "overlay": {
+                   "type": "text",
+                   "content": "Lorem ipsum..."
+           },
+           {
+               "interval": "1|4",
+               "buttonText": "Click me!",
+               "overlay": {
+                   "type": "link",
+                   "href": "https://example.com/link",
+                   "text": "Lorem ipsum..."
+           },
+           {
+               "interval": "1|4",
+               "buttonText": "Click me!",
+               "overlay": {
+                   "type": "photo",
+                   "alt": "Lorem ipsum...",
+                   "src": "https://example.com/photo.jpg"
+           },
+           {
+               "interval": "1|4",
+               "buttonText": "Click me!",
+               "overlay": {
+                   "type": "video",
+                   "url": "https://example.com/another-video.mp4"
+           },
+       ]
+-}
