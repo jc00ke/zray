@@ -1,4 +1,4 @@
-port module Main exposing (Model, outbound, view)
+port module Main exposing (Model, formattedStringToIntInterval, outbound, view)
 
 import Browser
 import Dict exposing (Dict)
@@ -7,6 +7,8 @@ import Html.Attributes exposing (alt, class, href, src, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
 import Interval exposing (Interval)
+import Json.Decode as D exposing (Decoder, field, int, string)
+import Json.Decode.Pipeline exposing (hardcoded, optional, required)
 import List.Extra
 import Media exposing (PortMsg, newVideo, pause, play)
 import Media.Attributes exposing (anonymous, controls, crossOrigin, playsInline)
@@ -386,3 +388,41 @@ main =
         , update = update
         , view = view
         }
+
+
+formattedStringToIntInterval : String -> Interval Int
+formattedStringToIntInterval s =
+    let
+        toInt =
+            \str ->
+                str
+                    |> String.toInt
+                    |> Maybe.withDefault 0
+
+        list =
+            s |> String.split "|" |> List.map toInt
+    in
+    case list of
+        [ a, b ] ->
+            Interval.from a b
+
+        _ ->
+            Interval.from 0 0
+
+
+
+--intervalDecoder : Decoder Interval Int
+--intervalDecoder =
+--string
+--|> D.andThen
+--(\s ->
+--s
+--|> String.split "-"
+--|> List.map2 String.toInt
+--)
+--textOverlayDecoder : Decoder Overlay
+--textOverlayDecoder =
+--D.succeed Overlay
+--|> custom D.field ("interval" string |> D.andThen intervalDecoder)
+--|> required "buttonText" String
+--|> required "overlay" Overlay
