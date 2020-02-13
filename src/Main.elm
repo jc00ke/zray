@@ -8,6 +8,7 @@ port module Main exposing
     , overlayDecoder
     , photoOverlayDecoder
     , textOverlayDecoder
+    , videoOverlayDecoder
     , view
     )
 
@@ -469,6 +470,11 @@ photoOverlayDecoder =
             (field "alt" string)
             (field "src" string)
         )
+
+
+videoOverlayDecoder : Decoder OverlayContent
+videoOverlayDecoder =
+    D.map Video (field "url" string)
 
 
 overlayDecoder : Decoder Overlay
