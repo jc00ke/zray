@@ -444,11 +444,7 @@ overlayContentDecoder =
 
 textOverlayDecoder : Decoder OverlayContent
 textOverlayDecoder =
-    string
-        |> D.andThen
-            (\s ->
-                D.succeed (Text s)
-            )
+    D.map Text (field "text" string)
 
 
 overlayDecoder : Decoder Overlay
@@ -469,31 +465,31 @@ overlayDecoder =
                "interval": "1|4",
                "buttonText": "Click me!",
                "overlay": {
-                   "type": "text",
                    "content": "Lorem ipsum..."
+                }
            },
            {
                "interval": "1|4",
                "buttonText": "Click me!",
                "overlay": {
-                   "type": "link",
                    "href": "https://example.com/link",
                    "text": "Lorem ipsum..."
+                }
            },
            {
                "interval": "1|4",
                "buttonText": "Click me!",
                "overlay": {
-                   "type": "photo",
                    "alt": "Lorem ipsum...",
                    "src": "https://example.com/photo.jpg"
+                }
            },
            {
                "interval": "1|4",
                "buttonText": "Click me!",
                "overlay": {
-                   "type": "video",
                    "url": "https://example.com/another-video.mp4"
+                }
            },
        ]
 -}
