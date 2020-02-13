@@ -3,8 +3,10 @@ port module Main exposing
     , OverlayContent(..)
     , formattedStringToIntInterval
     , intervalDecoder
+    , linkOverlayDecoder
     , outbound
     , overlayDecoder
+    , photoOverlayDecoder
     , textOverlayDecoder
     , view
     )
@@ -41,8 +43,8 @@ type alias LinkItem =
 
 
 type alias PhotoItem =
-    { src : String
-    , alt : String
+    { alt : String
+    , src : String
     }
 
 
@@ -445,6 +447,28 @@ overlayContentDecoder =
 textOverlayDecoder : Decoder OverlayContent
 textOverlayDecoder =
     D.map Text (field "text" string)
+
+
+linkOverlayDecoder : Decoder OverlayContent
+linkOverlayDecoder =
+    D.map
+        Link
+        (D.map2
+            LinkItem
+            (field "href" string)
+            (field "text" string)
+        )
+
+
+photoOverlayDecoder : Decoder OverlayContent
+photoOverlayDecoder =
+    D.map
+        Photo
+        (D.map2
+            PhotoItem
+            (field "alt" string)
+            (field "src" string)
+        )
 
 
 overlayDecoder : Decoder Overlay
