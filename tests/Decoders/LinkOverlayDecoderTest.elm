@@ -1,7 +1,6 @@
-module Decoders.LinkDecoderTest exposing (..)
+module Decoders.LinkOverlayDecoderTest exposing (..)
 
 import Expect
-import Fuzz exposing (int)
 import Json.Decode exposing (decodeString)
 import Main exposing (OverlayContent(..), linkOverlayDecoder)
 import String.Interpolate exposing (interpolate)

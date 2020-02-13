@@ -1,4 +1,4 @@
-module Decoders.PhotoDecoderTest exposing (..)
+module Decoders.PhotoOverlayDecoderTest exposing (..)
 
 import Expect
 import Fuzz exposing (int)

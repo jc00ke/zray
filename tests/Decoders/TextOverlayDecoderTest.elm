@@ -1,7 +1,6 @@
 module Decoders.TextOverlayDecoderTest exposing (..)
 
 import Expect
-import Fuzz exposing (int)
 import Json.Decode exposing (decodeString)
 import Main exposing (OverlayContent(..), textOverlayDecoder)
 import String.Interpolate exposing (interpolate)

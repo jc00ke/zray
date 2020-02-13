@@ -1,4 +1,4 @@
-module Decoders.VideoDecoderTest exposing (..)
+module Decoders.VideoOverlayDecoderTest exposing (..)
 
 import Expect
 import Json.Decode exposing (decodeString)
