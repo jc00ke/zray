@@ -70,6 +70,7 @@ type alias Model =
     , overlays : List Overlay
     , data : Dict Int (Maybe Int)
     , currentOverlay : Maybe Overlay
+    , err : Maybe String
     }
 
 
@@ -126,6 +127,17 @@ testOverlays =
     ]
 
 
+errModel : D.Error -> Model
+errModel err =
+    { state = newVideo "err"
+    , mediaSource = VideoSource
+    , overlays = []
+    , data = Dict.empty
+    , currentOverlay = Nothing
+    , err = Just (D.errorToString err)
+    }
+
+
 getOverlayIndexBySecond : Int -> List Overlay -> Maybe Int
 getOverlayIndexBySecond s overlays =
     List.Extra.findIndex
@@ -135,40 +147,46 @@ getOverlayIndexBySecond s overlays =
         overlays
 
 
-init : () -> ( Model, Cmd Msg )
-init _ =
-    let
-        state =
-            newVideo "dance"
+init : D.Value -> ( Model, Cmd Msg )
+init flags =
+    case D.decodeValue flagsDecoder flags of
+        Ok f ->
+            let
+                state =
+                    newVideo "dance"
 
-        duration_ =
-            -- TODO: figure out how to get this info
-            -- out of the video. Or, pass it in (not optimal)
-            --durationInSeconds state
-            82
+                duration_ =
+                    -- TODO: figure out how to get this info
+                    -- out of the video. Or, pass it in (not optimal)
+                    --durationInSeconds state
+                    82
 
-        range =
-            List.range 0 duration_
+                range =
+                    List.range 0 duration_
 
-        overlays =
-            testOverlays
+                overlays =
+                    testOverlays
 
-        data =
-            -- Becomes a Dict of (second, Maybe index of the overlay)
-            List.Extra.zip
-                range
-                (List.map (\s -> getOverlayIndexBySecond s overlays) range)
-                |> Dict.fromList
+                data =
+                    -- Becomes a Dict of (second, Maybe index of the overlay)
+                    List.Extra.zip
+                        range
+                        (List.map (\s -> getOverlayIndexBySecond s overlays) range)
+                        |> Dict.fromList
 
-        model =
-            { state = state
-            , mediaSource = VideoSource
-            , overlays = overlays
-            , data = data
-            , currentOverlay = Nothing
-            }
-    in
-    ( model, Cmd.none )
+                model =
+                    { state = state
+                    , mediaSource = VideoSource
+                    , overlays = overlays
+                    , data = data
+                    , currentOverlay = Nothing
+                    , err = Nothing
+                    }
+            in
+            ( model, Cmd.none )
+
+        Err err ->
+            ( errModel err, Cmd.none )
 
 
 view : Model -> Html Msg
