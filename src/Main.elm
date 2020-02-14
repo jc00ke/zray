@@ -15,13 +15,12 @@ port module Main exposing
 
 import Browser
 import Dict exposing (Dict)
-import Html exposing (Html, a, div, img, p, text)
-import Html.Attributes exposing (alt, href, src, target)
+import Html exposing (Attribute, Html, a, code, div, img, p, pre, text)
+import Html.Attributes exposing (alt, attribute, class, href, src, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
 import Interval exposing (Interval)
 import Json.Decode as D exposing (Decoder, field, int, string)
-import Json.Decode.Pipeline exposing (custom, required)
 import List.Extra
 import Media exposing (PortMsg, newVideo, pause, play)
 import Media.Attributes exposing (anonymous, controls, crossOrigin, playsInline)
@@ -154,42 +153,57 @@ init flags =
 
 view : Model -> Html Msg
 view model =
-    let
-        videoElement =
-            ( "video"
-            , Media.video
-                model.state
-                (Media.Events.allEvents MediaStateUpdate
-                    ++ [ playsInline True, controls True, crossOrigin anonymous ]
-                )
-                [ ( "source", Media.Source.source model.mainVideoUrl [] )
-                ]
-            )
+    case model.err of
+        Nothing ->
+            let
+                videoElement =
+                    ( "video"
+                    , Media.video
+                        model.state
+                        (Media.Events.allEvents MediaStateUpdate
+                            ++ [ playsInline True, controls True, crossOrigin anonymous ]
+                        )
+                        [ ( "source", Media.Source.source model.mainVideoUrl [] )
+                        ]
+                    )
 
-        mediaInfo =
-            [ p [] [ text ("current time: " ++ (String.fromFloat <| currentTime model.state)) ]
-            , p [] [ text ("current second: " ++ (String.fromInt <| currentSecond model.state)) ]
-            , p [] [ text ("duration: " ++ (String.fromFloat <| duration model.state)) ]
-            , p [] [ text ("duration in seconds: " ++ (model.state |> duration |> truncate |> String.fromInt)) ]
-            ]
-    in
-    div [ TW.container, TW.mx_auto ]
-        [ K.node
-            "div"
-            [ TW.relative
-            , TW.top_0
-            , TW.left_0
-            , TW.flex
-            , TW.border_red_600
-            , TW.border_2
-            ]
-            [ videoElement
-            , overlayControl model
-            , overlayCloseControl model
-            , overlay model
-            ]
-        , div [] mediaInfo
-        ]
+                mediaInfo =
+                    [ p [] [ text ("current time: " ++ (String.fromFloat <| currentTime model.state)) ]
+                    , p [] [ text ("current second: " ++ (String.fromInt <| currentSecond model.state)) ]
+                    , p [] [ text ("duration: " ++ (String.fromFloat <| duration model.state)) ]
+                    , p [] [ text ("duration in seconds: " ++ (model.state |> duration |> truncate |> String.fromInt)) ]
+                    ]
+            in
+            div [ TW.container, TW.mx_auto ]
+                [ K.node
+                    "div"
+                    [ TW.relative
+                    , TW.top_0
+                    , TW.left_0
+                    , TW.flex
+                    , TW.border_red_600
+                    , TW.border_2
+                    ]
+                    [ videoElement
+                    , overlayControl model
+                    , overlayCloseControl model
+                    , overlay model
+                    ]
+                , div [] mediaInfo
+                ]
+
+        Just err ->
+            div [ TW.container, TW.mx_auto ]
+                [ div [ role "alert" ]
+                    [ div [ class "bg-red-500 text-white font-bold rounded-t px-4 py-2" ] [ text "Error!" ]
+                    , div [ class "border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700" ]
+                        [ pre []
+                            [ code []
+                                [ text err ]
+                            ]
+                        ]
+                    ]
+                ]
 
 
 overlay : Model -> ( String, Html Msg )
@@ -474,6 +488,11 @@ flagsDecoder =
         (field "mainVideoUrl" string)
         (field "videoLength" int)
         (field "overlays" (D.list overlayDecoder))
+
+
+role : String -> Attribute msg
+role =
+    attribute "role"
 
 
 
