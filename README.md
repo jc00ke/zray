@@ -39,3 +39,5 @@ Video overlay, similar to Amazon's X-Ray feature.
 * https://tailwind.run/ke4wNC/4
 * https://codepen.io/soberdash/pen/BjOMyg
 * https://github.com/JoelQ/fourier-art/commit/1acfc497717f7e530f7d745b5c7eb630512cbd6c
+* https://becoming-functional.com/testing-json-decoders-in-elm-39f613a98895
+* https://thoughtbot.com/blog/5-common-json-decoders
