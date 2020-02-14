@@ -71,6 +71,7 @@ type alias Model =
     , data : Dict Int (Maybe Int)
     , currentOverlay : Maybe Overlay
     , err : Maybe String
+    , mainVideoUrl : String
     }
 
 
@@ -90,43 +91,6 @@ type Msg
     | Close
 
 
-testTextOverlay =
-    { interval = Interval.from 1 4
-    , buttonText = "Click for Location"
-    , content = Text "Filmed at the Orcas Center, Madrona Room on December 19, 2019"
-    }
-
-
-testLinkOverlay =
-    { interval = Interval.from 5 10
-    , buttonText = "Click for Link"
-    , content = Link { href = "http://www.orcas.dance", text = "www.orcas.dance" }
-    }
-
-
-testPhotoOverlay =
-    { interval = Interval.from 15 20
-    , buttonText = "Click for Photo"
-    , content = Photo { src = "assets/po1.jpg", alt = "Dancer!" }
-    }
-
-
-testVideoOverlay =
-    { interval = Interval.from 41 44
-    , buttonText = "Click for Video"
-    , content = Video "assets/vo1.mp4"
-    }
-
-
-testOverlays : List Overlay
-testOverlays =
-    [ testTextOverlay
-    , testLinkOverlay
-    , testPhotoOverlay
-    , testVideoOverlay
-    ]
-
-
 errModel : D.Error -> Model
 errModel err =
     { state = newVideo "err"
@@ -135,6 +99,7 @@ errModel err =
     , data = Dict.empty
     , currentOverlay = Nothing
     , err = Just (D.errorToString err)
+    , mainVideoUrl = ""
     }
 
 
@@ -156,16 +121,13 @@ init flags =
                     newVideo "dance"
 
                 duration_ =
-                    -- TODO: figure out how to get this info
-                    -- out of the video. Or, pass it in (not optimal)
-                    --durationInSeconds state
-                    82
+                    f.videoLength
 
                 range =
                     List.range 0 duration_
 
                 overlays =
-                    testOverlays
+                    f.overlays
 
                 data =
                     -- Becomes a Dict of (second, Maybe index of the overlay)
@@ -181,6 +143,7 @@ init flags =
                     , data = data
                     , currentOverlay = Nothing
                     , err = Nothing
+                    , mainVideoUrl = f.mainVideoUrl
                     }
             in
             ( model, Cmd.none )
@@ -199,7 +162,7 @@ view model =
                 (Media.Events.allEvents MediaStateUpdate
                     ++ [ playsInline True, controls True, crossOrigin anonymous ]
                 )
-                [ ( "source", Media.Source.source "/assets/master.mp4" [] )
+                [ ( "source", Media.Source.source model.mainVideoUrl [] )
                 ]
             )
 
