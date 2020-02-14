@@ -15,7 +15,7 @@ port module Main exposing
 
 import Browser
 import Dict exposing (Dict)
-import Html exposing (Attribute, Html, a, code, div, img, p, pre, text)
+import Html exposing (Attribute, Html, a, code, div, img, pre, text)
 import Html.Attributes exposing (alt, attribute, class, href, src, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
@@ -275,7 +275,7 @@ overlayCloseControl model =
         Nothing ->
             ( "div", div [] [] )
 
-        Just o ->
+        Just _ ->
             ( "div"
             , div
                 [ TW.top_0
@@ -386,6 +386,7 @@ subscriptions _ =
     Sub.batch []
 
 
+main : Program D.Value Model Msg
 main =
     Browser.element
         { init = init
