@@ -166,13 +166,6 @@ view model =
                         [ ( "source", Media.Source.source model.mainVideoUrl [] )
                         ]
                     )
-
-                mediaInfo =
-                    [ p [] [ text ("current time: " ++ (String.fromFloat <| currentTime model.state)) ]
-                    , p [] [ text ("current second: " ++ (String.fromInt <| currentSecond model.state)) ]
-                    , p [] [ text ("duration: " ++ (String.fromFloat <| duration model.state)) ]
-                    , p [] [ text ("duration in seconds: " ++ (model.state |> duration |> truncate |> String.fromInt)) ]
-                    ]
             in
             div [ TW.container, TW.mx_auto ]
                 [ K.node
@@ -181,15 +174,12 @@ view model =
                     , TW.top_0
                     , TW.left_0
                     , TW.flex
-                    , TW.border_red_600
-                    , TW.border_2
                     ]
                     [ videoElement
                     , overlayControl model
                     , overlayCloseControl model
                     , overlay model
                     ]
-                , div [] mediaInfo
                 ]
 
         Just err ->
