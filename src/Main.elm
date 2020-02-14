@@ -111,6 +111,22 @@ getOverlayIndexBySecond s overlays =
         overlays
 
 
+prepareOverlayData : Flags -> Dict Int (Maybe Int)
+prepareOverlayData flags =
+    let
+        duration_ =
+            flags.videoLength
+
+        range =
+            List.range 0 duration_
+    in
+    -- Becomes a Dict of (second, Maybe index of the overlay)
+    List.Extra.zip
+        range
+        (List.map (\s -> getOverlayIndexBySecond s flags.overlays) range)
+        |> Dict.fromList
+
+
 init : D.Value -> ( Model, Cmd Msg )
 init flags =
     case D.decodeValue flagsDecoder flags of
@@ -119,27 +135,14 @@ init flags =
                 state =
                     newVideo "dance"
 
-                duration_ =
-                    f.videoLength
-
-                range =
-                    List.range 0 duration_
-
                 overlays =
                     f.overlays
-
-                data =
-                    -- Becomes a Dict of (second, Maybe index of the overlay)
-                    List.Extra.zip
-                        range
-                        (List.map (\s -> getOverlayIndexBySecond s overlays) range)
-                        |> Dict.fromList
 
                 model =
                     { state = state
                     , mediaSource = VideoSource
                     , overlays = overlays
-                    , data = data
+                    , data = prepareOverlayData f
                     , currentOverlay = Nothing
                     , err = Nothing
                     , mainVideoUrl = f.mainVideoUrl
