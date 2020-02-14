@@ -1,44 +1,146 @@
 module Decoders.OverlayDecoderTest exposing (..)
 
 import Expect exposing (Expectation)
-import Fuzz exposing (string)
 import Interval
-import Json.Decode exposing (decodeValue)
-import Json.Encode as E
+import Json.Decode exposing (decodeString)
 import Main exposing (OverlayContent(..), overlayDecoder)
+import String.Interpolate exposing (interpolate)
 import Test exposing (..)
 
 
 suite : Test
 suite =
-    skip <|
-        describe "Decoders"
-            [ describe "overlayDecoder"
-                [ fuzz2 string string "maps to an overlay" <|
-                    \buttonText content ->
-                        let
-                            interval =
-                                "1|4"
+    describe "overlayDecoder"
+        [ test "maps text to a text overlay" <|
+            \_ ->
+                let
+                    content =
+                        "some content"
 
-                            json =
-                                E.object
-                                    [ ( "interval", E.string interval )
-                                    , ( "buttonText", E.string buttonText )
-                                    , ( "overlay"
-                                      , E.object
-                                            [ ( "type", E.string "text" )
-                                            , ( "content", E.string content )
-                                            ]
-                                      )
-                                    ]
-                        in
-                        decodeValue overlayDecoder json
-                            |> Expect.equal
-                                (Ok
-                                    { interval = Interval.from 1 4
-                                    , buttonText = buttonText
-                                    , content = Text content
-                                    }
-                                )
-                ]
-            ]
+                    buttonText =
+                        "some buttonText"
+
+                    json_ =
+                        """
+                        {
+                            "interval": "1|4",
+                            "buttonText": "{0}",
+                            "overlay": {
+                                "text": "{1}"
+                            }
+                        }
+                        """
+
+                    json =
+                        interpolate json_ [ buttonText, content ]
+                in
+                decodeString overlayDecoder json
+                    |> Expect.equal
+                        (Ok
+                            { interval = Interval.from 1 4
+                            , buttonText = buttonText
+                            , content = Text content
+                            }
+                        )
+        , test "maps link to a link overlay" <|
+            \_ ->
+                let
+                    content =
+                        "some content"
+
+                    buttonText =
+                        "some buttonText"
+
+                    href =
+                        "https://example.com"
+
+                    json_ =
+                        """
+                        {
+                            "interval": "1|4",
+                            "buttonText": "{0}",
+                            "overlay": {
+                                "href": "{2}",
+                                "text": "{1}"
+                            }
+                        }
+                        """
+
+                    json =
+                        interpolate json_ [ buttonText, content, href ]
+                in
+                decodeString overlayDecoder json
+                    |> Expect.equal
+                        (Ok
+                            { interval = Interval.from 1 4
+                            , buttonText = buttonText
+                            , content = Link { href = href, text = content }
+                            }
+                        )
+        , test "maps photo to a photo overlay" <|
+            \_ ->
+                let
+                    alt =
+                        "some alt content"
+
+                    buttonText =
+                        "some buttonText"
+
+                    src =
+                        "https://example.com/photo.jpg"
+
+                    json_ =
+                        """
+                        {
+                            "interval": "1|4",
+                            "buttonText": "{0}",
+                            "overlay": {
+                                "src": "{2}",
+                                "alt": "{1}"
+                            }
+                        }
+                        """
+
+                    json =
+                        interpolate json_ [ buttonText, alt, src ]
+                in
+                decodeString overlayDecoder json
+                    |> Expect.equal
+                        (Ok
+                            { interval = Interval.from 1 4
+                            , buttonText = buttonText
+                            , content = Photo { alt = alt, src = src }
+                            }
+                        )
+        , test "maps video to a video overlay" <|
+            \_ ->
+                let
+                    buttonText =
+                        "some buttonText"
+
+                    url =
+                        "https://example.com/video.mp4"
+
+                    json_ =
+                        """
+                        {
+                            "interval": "1|4",
+                            "buttonText": "{0}",
+                            "overlay": {
+                                "url": "{1}"
+                            }
+                        }
+                        """
+
+                    json =
+                        interpolate json_ [ buttonText, url ]
+                in
+                decodeString overlayDecoder json
+                    |> Expect.equal
+                        (Ok
+                            { interval = Interval.from 1 4
+                            , buttonText = buttonText
+                            , content = Video url
+                            }
+                        )
+        ]

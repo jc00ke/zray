@@ -1,6 +1,7 @@
 port module Main exposing
     ( Model
     , OverlayContent(..)
+    , flagsDecoder
     , formattedStringToIntInterval
     , intervalDecoder
     , linkOverlayDecoder
@@ -19,7 +20,7 @@ import Html.Attributes exposing (alt, href, src, target)
 import Html.Events exposing (onClick)
 import Html.Keyed as K
 import Interval exposing (Interval)
-import Json.Decode as D exposing (Decoder, field, string)
+import Json.Decode as D exposing (Decoder, field, int, string)
 import Json.Decode.Pipeline exposing (custom, required)
 import List.Extra
 import Media exposing (PortMsg, newVideo, pause, play)
@@ -31,6 +32,13 @@ import TW
 
 
 port outbound : PortMsg -> Cmd msg
+
+
+type alias Flags =
+    { mainVideoUrl : String
+    , videoLength : Int
+    , overlays : List Overlay
+    }
 
 
 type MediaSource
@@ -431,18 +439,19 @@ intervalDecoder =
             )
 
 
+overlayDecoder : Decoder Overlay
+overlayDecoder =
+    D.map3
+        Overlay
+        (field "interval" intervalDecoder)
+        (field "buttonText" string)
+        (field "overlay" overlayContentDecoder)
+
+
 overlayContentDecoder : Decoder OverlayContent
 overlayContentDecoder =
-    field "type" string
-        |> D.andThen
-            (\t ->
-                case t of
-                    "text" ->
-                        D.succeed (Text t)
-
-                    _ ->
-                        D.fail "Unknown overlay type"
-            )
+    D.oneOf
+        [ linkOverlayDecoder, textOverlayDecoder, photoOverlayDecoder, videoOverlayDecoder ]
 
 
 textOverlayDecoder : Decoder OverlayContent
@@ -477,12 +486,13 @@ videoOverlayDecoder =
     D.map Video (field "url" string)
 
 
-overlayDecoder : Decoder Overlay
-overlayDecoder =
-    D.succeed Overlay
-        |> custom (field "interval" intervalDecoder)
-        |> required "buttonText" string
-        |> required "overlay" overlayContentDecoder
+flagsDecoder : Decoder Flags
+flagsDecoder =
+    D.map3
+        Flags
+        (field "mainVideoUrl" string)
+        (field "videoLength" int)
+        (field "overlays" (D.list overlayDecoder))
 
 
 
