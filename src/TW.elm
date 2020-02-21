@@ -69,6 +69,11 @@ hover_bg_blue_600 =
     A.class "hover:bg-blue-600"
 
 
+hover_no_underline : Html.Attribute msg
+hover_no_underline =
+    A.class "hover:no-underline"
+
+
 invisible : Html.Attribute msg
 invisible =
     A.class "invisible"
@@ -77,6 +82,11 @@ invisible =
 left_0 : Html.Attribute msg
 left_0 =
     A.class "left-0"
+
+
+m_4 : Html.Attribute msg
+m_4 =
+    A.class "m-4"
 
 
 mx_auto : Html.Attribute msg
@@ -104,6 +114,11 @@ p_10 =
     A.class "p-10"
 
 
+p_2 : Html.Attribute msg
+p_2 =
+    A.class "p-2"
+
+
 px_4 : Html.Attribute msg
 px_4 =
     A.class "px-4"
@@ -129,6 +144,11 @@ text_center =
     A.class "text-center"
 
 
+text_gray_200 : Html.Attribute msg
+text_gray_200 =
+    A.class "text-gray-200"
+
+
 text_right : Html.Attribute msg
 text_right =
     A.class "text-right"
@@ -142,6 +162,11 @@ text_white =
 top_0 : Html.Attribute msg
 top_0 =
     A.class "top-0"
+
+
+underline : Html.Attribute msg
+underline =
+    A.class "underline"
 
 
 visible : Html.Attribute msg

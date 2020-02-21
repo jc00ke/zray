@@ -236,6 +236,8 @@ contentOverlay element =
             , TW.bg_gray_800
             , TW.opacity_100
             , TW.p_10
+            , TW.text_center
+            , TW.text_gray_200
             ]
             [ element ]
         ]
@@ -246,7 +248,7 @@ videoOverlay src =
     contentOverlay <|
         K.node
             "div"
-            []
+            [ TW.m_4 ]
             [ ( "video"
               , Media.video
                     (newVideo "overlay video")
@@ -259,12 +261,28 @@ videoOverlay src =
 
 photoOverlay : PhotoItem -> Html Msg
 photoOverlay item =
-    contentOverlay <| img [ src item.src, alt item.alt, TW.object_cover, TW.w_full, TW.h_full ] []
+    contentOverlay <|
+        img
+            [ src item.src
+            , alt item.alt
+            , TW.object_cover
+            , TW.w_full
+            , TW.h_full
+            , TW.m_4
+            ]
+            []
 
 
 linkOverlay : LinkItem -> Html Msg
 linkOverlay item =
-    contentOverlay <| a [ href item.href, target "_blank" ] [ text item.text ]
+    contentOverlay <|
+        a
+            [ href item.href
+            , TW.underline
+            , TW.hover_no_underline
+            , target "_blank"
+            ]
+            [ text item.text ]
 
 
 textOverlay : String -> Html Msg
@@ -284,6 +302,7 @@ overlayCloseControl model =
                 [ TW.top_0
                 , TW.absolute
                 , TW.z_10
+                , TW.p_2
                 ]
                 [ button "Close" Close ]
             )
@@ -335,6 +354,7 @@ overlayControl model =
             , div
                 [ TW.top_0
                 , TW.absolute
+                , TW.p_2
                 , toggleOverlayButtonVisibility model
                 , onClick <| Show o
                 ]
