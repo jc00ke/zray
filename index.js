@@ -33,7 +33,7 @@ import { Elm } from "./src/Main.elm"
          "interval": "22|30",
          "buttonText": "Click for Video",
          "overlay": {
-           "url": "/assets/v01.mp4"
+           "url": "/assets/vo1.mp4"
           }
        }
     ]
