@@ -279,7 +279,7 @@ linkOverlay item =
         a
             [ href item.href
             , TW.underline
-            , TW.hover_no_underline
+            , TW.hover__no_underline
             , target "_blank"
             ]
             [ text item.text ]
@@ -313,7 +313,7 @@ button txt action =
     Html.button
         [ onClick action
         , TW.bg_blue_500
-        , TW.hover_bg_blue_600
+        , TW.hover__bg_blue_600
         , TW.text_white
         , TW.font_bold
         , TW.py_2

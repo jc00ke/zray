@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+app="dist/app.js"
+js="dist/index.js"
+min="dist/index.min.js"
+css="dist/main.css"
+mediaApp="mediaApp.js"
+
+cat $app $mediaApp > $js
+compress_opts="pure_funcs=\"F2,F3,F4,F5,F6,F7,F8,F9,A2,A3,A4,A5,A6,A7,A8,A9\",pure_getters,keep_fargs=false,unsafe_comps,unsafe"
+
+node_modules/terser/bin/terser --compress $compress_opts --mangle --output=$min -- $js
+
+hash=$(cat $app $mediaApp $css | sha256sum | cut -c1-10)
+hashed_app="dist/app.$hash.js"
+hashed_min="dist/app.min.$hash.js"
+cp $js $hashed_app
+cp $min $hashed_min
+
+echo "Compiled size:$(cat $hashed_app | wc -c) bytes  ($hashed_app)"
+echo "Minified size:$(cat $hashed_min | wc -c) bytes  ($hashed_min)"
+echo "Gzipped size: $(cat $hashed_min | gzip -c | wc -c) bytes"
+
+sed "s/---hashed_app---/app.$hash.js/" < index-dist.html > dist/index.html

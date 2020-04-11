@@ -1,4 +1,4 @@
-export let MediaApp = {
+const MediaApp = {
   portHandler: function(msg) {
     var media = null;
     switch (msg.tag) {
