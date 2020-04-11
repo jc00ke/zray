@@ -27,7 +27,9 @@ Video overlay, similar to Amazon's X-Ray feature.
 ## Building
 
 ```
-> yarn parcel build index.html
+> yarn build
+# or
+> yarn build-prod
 > ls dist/
 ```
 
