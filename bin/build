@@ -18,9 +18,11 @@ hashed_app="dist/app.$hash.js"
 hashed_min="dist/app.min.$hash.js"
 cp $js $hashed_app
 cp $min $hashed_min
+gzipped_min="dist/app.min.$hash.js.gz"
+gzip -c "$hashed_min" > "$gzipped_min"
 
-echo "Compiled size:$(cat $hashed_app | wc -c) bytes  ($hashed_app)"
-echo "Minified size:$(cat $hashed_min | wc -c) bytes  ($hashed_min)"
-echo "Gzipped size: $(cat $hashed_min | gzip -c | wc -c) bytes"
+echo "Compiled size: $(ls -sh $hashed_app)"
+echo "Minified size: $(ls -sh $hashed_min)"
+echo "Gzipped size: $(ls -sh $gzipped_min)"
 
 sed "s/---hashed_app---/app.$hash.js/" < index-dist.html > dist/index.html
